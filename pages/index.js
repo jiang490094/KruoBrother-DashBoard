@@ -1,8 +1,15 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+import TopProduct from "../components/TopProduct";
+
 function HomePage({ className }) {
-  return <div className={className}>Welcome to alpha!</div>;
+  return (
+    <>
+      <div className={className}>Welcome to alpha!</div>
+      <TopProduct />
+    </>
+  );
 }
 
 export default styled(HomePage)`
