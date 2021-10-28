@@ -1,8 +1,15 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import dynamic from "next/dynamic";
+
+const Map = dynamic(() => import("../view/map"));
 
 function HomePage({ className }) {
-  return <div className={className}>Welcome to alpha!</div>;
+  return (
+    <div className={className}>
+      <Map />
+    </div>
+  );
 }
 
 export default styled(HomePage)`
