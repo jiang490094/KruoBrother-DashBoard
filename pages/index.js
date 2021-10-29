@@ -13,6 +13,7 @@ function HomePage({ className }) {
 }
 
 export default styled(HomePage)`
+  background-color: black;
   color: red;
 `;
 
