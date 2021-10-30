@@ -1,42 +1,8 @@
-import styled from "styled-components";
-import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
-import * as d3 from "d3";
+import React from "react";
 
-const Map = ({ className }) => {
-  const [count, setCount] = useState(0);
-  const [country, setCountry] = useState("#Taipei");
-  const setNextCount = () => {
-    const countryId = ["#Taipei", "#Newtaipei", "#Taoyuan"];
-    let nextCount = count + 1;
-    if (nextCount > 2) nextCount = 0;
-    setCount(nextCount);
-    console.log(nextCount);
-    setCountry(countryId[nextCount]);
-  };
-  useEffect(() => {
-    var timerID = setInterval(() => {
-      setNextCount();
-    }, 1000);
-    return function cleanup() {
-      clearInterval(timerID);
-    };
-  });
-  useEffect(() => {
-    d3.select("#taiwan-map")
-      .selectAll("g")
-      .attr("fill", "blue")
-      .attr("opacity", "0.5")
-      .attr("transform", "translate(0, 0)");
-    d3.select("#taiwan-map")
-      .select(country)
-      .attr("fill", "blue")
-      .attr("opacity", "1")
-      .attr("transform", "translate(-6, -6)");
-  }, [country]);
-  console.log(country);
+export const taiwanMap = () => {
   return (
-    <div className={className}>
+    <div>
       <svg
         width="552"
         height="1003"
@@ -44,7 +10,6 @@ const Map = ({ className }) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         xlink="http://www.w3.org/1999/xlink"
-        id="taiwan-map"
       >
         {/* 高雄 */}
         <g
@@ -1405,19 +1370,4 @@ const Map = ({ className }) => {
       </svg>
     </div>
   );
-};
-
-export default styled(Map)`
-  height: 100vh;
-  /* transform-style: preserve-3d; */
-  svg {
-    height: 90%;
-  }
-  .active {
-    tranfrom: translate(-5px, -5px);
-    stroke-weight: 5px;
-  }
-`;
-Map.propTypes = {
-  className: PropTypes.string.isRequired
 };
