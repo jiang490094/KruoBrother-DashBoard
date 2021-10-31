@@ -42,7 +42,7 @@ const Map = ({ className }) => {
   }, [country]);
   console.log(country);
   return (
-    <div className={className}>
+    <div className={`${className} `}>
       <svg
         width="552"
         height="1003"
@@ -1416,16 +1416,21 @@ const Map = ({ className }) => {
 export default styled(Map)`
   height: 100vh;
   overflow: hidden;
+  position: absolute;
+  width: 100%;
   svg {
     height: 90%;
     transform: scale(3) translate(10vw, 30vh);
     transition: transform 1s;
   }
+  path {
+    fill-opacity: 0.5;
+  }
 
   .selectedText {
-    fill: rgba(147, 252, 255, 0.37);
+    fill: rgba(147, 252, 255, 0.3);
     transform: translate(-3px, -3px);
-    filter: drop-shadow(1px 1px 10px white);
+    filter: drop-shadow(1px 1px 5px white);
     transition: transform 0.5s;
   }
 `;
