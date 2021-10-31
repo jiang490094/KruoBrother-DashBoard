@@ -129,6 +129,7 @@ export default styled(Background)`
       rgba(0, 0, 0, 1) 0%,
       rgba(27, 33, 50, 1) 100%
     );
+    filter: blur(1px);
   }
 `;
 Background.propTypes = {
