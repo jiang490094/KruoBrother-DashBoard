@@ -6,12 +6,20 @@ import * as d3 from "d3";
 const Map = ({ className }) => {
   const [count, setCount] = useState(0);
   const [country, setCountry] = useState("#Taipei");
+  const countryId = [
+    "#Taipei",
+    "#Newtaipei",
+    "#Taoyuan",
+    "#Kaohsiung",
+    "#Pingtung",
+    "#Tainan",
+    "#Hsinchu"
+  ];
+
   const setNextCount = () => {
-    const countryId = ["#Taipei", "#Newtaipei", "#Taoyuan"];
     let nextCount = count + 1;
-    if (nextCount > 2) nextCount = 0;
+    if (nextCount > countryId.length - 1) nextCount = 0;
     setCount(nextCount);
-    console.log(nextCount);
     setCountry(countryId[nextCount]);
   };
   useEffect(() => {
@@ -25,14 +33,12 @@ const Map = ({ className }) => {
   useEffect(() => {
     d3.select("#taiwan-map")
       .selectAll("g")
-      .attr("fill", "blue")
-      .attr("opacity", "0.5")
-      .attr("transform", "translate(0, 0)");
+
+      .classed("selectedText", false);
     d3.select("#taiwan-map")
       .select(country)
-      .attr("fill", "blue")
-      .attr("opacity", "1")
-      .attr("transform", "translate(-6, -6)");
+
+      .classed("selectedText", true);
   }, [country]);
   console.log(country);
   return (
@@ -1409,13 +1415,18 @@ const Map = ({ className }) => {
 
 export default styled(Map)`
   height: 100vh;
-  /* transform-style: preserve-3d; */
+  overflow: hidden;
   svg {
     height: 90%;
+    transform: scale(3) translate(10vw, 30vh);
+    transition: transform 1s;
   }
-  .active {
-    tranfrom: translate(-5px, -5px);
-    stroke-weight: 5px;
+
+  .selectedText {
+    fill: rgba(147, 252, 255, 0.37);
+    transform: translate(-3px, -3px);
+    filter: drop-shadow(1px 1px 10px white);
+    transition: transform 0.5s;
   }
 `;
 Map.propTypes = {
