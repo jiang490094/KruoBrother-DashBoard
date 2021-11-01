@@ -6,12 +6,10 @@ const Background = ({ className }) => {
   useEffect(() => {
     var canvas = document.getElementById("canvas"),
       ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * 1.5;
     canvas.style.display = "block";
     var stars = [], // Array that contains the stars
-      FPS = 30, // Frames per second
-      x = 250, // Number of stars
+      FPS = 24, // Frames per second
+      x = 200, // Number of stars
       mouse = {
         x: 0,
         y: 0
