@@ -21,7 +21,7 @@ function HomePage({ className }) {
 }
 
 export default styled(HomePage)`
-  color: red;
+  color: white;
 `;
 
 HomePage.propTypes = {
