@@ -50,6 +50,7 @@ const Info = styled.div`
       font-size: 36px;
       color: rgba(255, 255, 255, 0.8);
       margin-left: 103.32px;
+      font-family: "Prohibition";
       img {
         width: 30px;
         height: 30px;
@@ -197,7 +198,7 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
         <img src="Images/buy123/info-bar.svg" className="info" />
         <div className="info-detail">
           <img src="Images/pcone-icon.svg" />
-          <div>${displayNum}</div>
+          <div>$ {displayNum}</div>
         </div>
         <div className="info-detail">
           <img src="Images/buy123-icon.svg" />
