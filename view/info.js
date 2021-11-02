@@ -213,13 +213,7 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
     </Info>
   );
 };
-export default styled(InfoCard)`
-  .point {
-    position: absolute;
-    left: ${(props) => props.poxitionX + "px"};
-    top: ${(props) => props.poxitionY + "px"};
-  }
-`;
+export default InfoCard;
 
 InfoCard.propTypes = {
   className: PropTypes.string.isRequired,
