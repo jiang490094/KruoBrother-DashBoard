@@ -13,7 +13,7 @@ const Map = ({ className }) => {
   const [country, setCountry] = useState("#Keelung");
   const [position, setPosition] = useState({});
   const mapRef = useRef(null);
-  console.log(123, heartBeat);
+
   const countryId = [
     "#Keelung",
     "#Taipei",

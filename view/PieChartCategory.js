@@ -62,34 +62,34 @@ const PieChartCategory = ({ className }) => {
 
   const chartColor = {
     first: {
-      color: "rgba(82, 0, 255, 1)"
+      color: "rgba(82, 0, 255, 0.8)"
     },
     second: {
-      color: "rgba(24, 254, 254, 1)"
+      color: "rgba(24, 254, 254, 0.8)"
     },
     third: {
-      color: "rgba(151, 0, 175, 1)"
+      color: "rgba(151, 0, 175, 0.8)"
     },
     fourth: {
-      color: "rgba(255, 0, 214, 1)"
+      color: "rgba(255, 0, 214, 0.8)"
     },
     fifth: {
-      color: "rgba(255, 0, 214, 1)"
+      color: "rgba(255, 0, 214, 0.8)"
     },
     sixth: {
-      color: "rgba(255, 153, 0, 1)"
+      color: "rgba(255, 153, 0, 0.8)"
     },
     seventh: {
-      color: "rgba(255, 92, 22, 1)"
+      color: "rgba(255, 92, 22, 0.8)"
     },
     eighth: {
-      color: "rgba(255, 61, 0, 1)"
+      color: "rgba(255, 61, 0, 0.8)"
     },
     ninth: {
-      color: "rgba(6, 132, 248, 1)"
+      color: "rgba(6, 132, 248, 0.8)"
     },
     tenth: {
-      color: "rgba(5, 0, 232, 1)"
+      color: "rgba(5, 0, 232, 0.8)"
     }
   };
 
@@ -101,6 +101,19 @@ const PieChartCategory = ({ className }) => {
   //   "rgba(255, 0, 214, 1)"
   // ];
   // const color2 = [
+  //   "rgba(255, 153, 0, 1)",
+  //   "rgba(255, 92, 22, 1)",
+  //   "rgba(255, 61, 0, 1)",
+  //   "rgba(6, 132, 248, 1)",
+  //   "rgba(5, 0, 232, 1)"
+  // ];
+
+  // const color = [
+  //   "rgba(82, 0, 255, 1)",
+  //   "rgba(24, 254, 254, 1)",
+  //   "rgba(151, 0, 175, 1)",
+  //   "rgba(255, 0, 214, 1)",
+  //   "rgba(255, 0, 214, 1)",
   //   "rgba(255, 153, 0, 1)",
   //   "rgba(255, 92, 22, 1)",
   //   "rgba(255, 61, 0, 1)",
@@ -154,6 +167,35 @@ const PieChartCategory = ({ className }) => {
     pie_chart("pie");
   }, []);
 
+  useEffect(() => {
+    const width = 40;
+    const height = 36;
+    const svg = d3.select("svg").attr("width", width).attr("height", height);
+    const rootLayer = svg.append("g");
+    const pieChartLayer = rootLayer
+      .append("g")
+      .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+    // 以上不重要，只是初始畫圖層與置中。
+
+    // 產生一園內半徑長50，外半徑長100，的環狀圖
+    const arc = d3.arc().innerRadius(0).outerRadius(13.44);
+
+    // 資料轉為角度資料
+    const datas = [11, 22, 33];
+    const arcs = d3.pie()(datas);
+
+    // 使用`enter`新增`path`元件並設定繪製圖屬性`d`。
+    pieChartLayer
+      .selectAll("path")
+      .data(arcs)
+      .enter()
+      .append("path")
+      .attr("d", (data) => arc(data))
+      .attr("stroke", "white");
+    // .attr("fill", "pink", "white");
+  }, []);
+
   return (
     <>
       <div className={className}>
@@ -162,7 +204,9 @@ const PieChartCategory = ({ className }) => {
             if (key % 2 == 0) {
               return (
                 <div className="category-list">
-                  <div className="category-number"></div>
+                  <div className="category-number">
+                    <svg></svg>
+                  </div>
                   <div className="category-name">{i + (key + 1)}</div>
                 </div>
               );
@@ -175,7 +219,9 @@ const PieChartCategory = ({ className }) => {
             if (key % 2 != 0) {
               return (
                 <div className="category-list">
-                  <div className="category-number"></div>
+                  <div className="category-number">
+                    <svg></svg>
+                  </div>
                   <div className="category-name">{i + (key + 1)}</div>
                 </div>
               );
