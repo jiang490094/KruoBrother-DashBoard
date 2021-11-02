@@ -44,7 +44,7 @@ PieChartTitle.propTypes = {
 export default styled(PieChartTitle)`
   width: 500px;
   background-color: black;
-  position: relative;
+  /* position: relative; */
   margin-bottom: 20px;
 
   .buy123-line {

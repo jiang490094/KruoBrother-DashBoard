@@ -37,6 +37,9 @@ SiteNumber.propTypes = {
 
 export default styled(SiteNumber)`
   width: 500px;
+  position: fixed;
+  right: 0;
+  bottom: 0;
   img {
     display: block;
   }

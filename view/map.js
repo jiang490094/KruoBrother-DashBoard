@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import * as d3 from "d3";
+
+import { GlobalContext } from "../provider/globalprovider";
 
 import InfoCard from "./info";
 
 const Map = ({ className }) => {
+  const { heartBeat } = useContext(GlobalContext);
   const [count, setCount] = useState(0);
   const [country, setCountry] = useState("#Keelung");
   const [position, setPosition] = useState({});
@@ -45,13 +48,10 @@ const Map = ({ className }) => {
     }, 4000);
   };
   useEffect(() => {
-    var timerID = setInterval(() => {
+    if (heartBeat % 5 === 0) {
       setNextCount();
-    }, 5000);
-    return function cleanup() {
-      clearInterval(timerID);
-    };
-  });
+    }
+  }, [heartBeat]);
   useEffect(() => {
     const current = d3
       .select("#taiwan-map")

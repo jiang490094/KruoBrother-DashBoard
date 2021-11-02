@@ -2,11 +2,13 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import dynamic from "next/dynamic";
 
-import Background from "../view/background";
+import Globalprovider from "../provider/globalprovider";
 
 const Map = dynamic(() => import("../view/map"));
 const Time = dynamic(() => import("../view/Time"));
 const PieChart = dynamic(() => import("../view/PieChart"));
+const Background = dynamic(() => import("../view/background"));
+const Celebrate = dynamic(() => import("../view/celebrate"));
 const SiteNumber = dynamic(() => import("../view/SiteNumber"));
 function HomePage({ className }) {
   const data = {
@@ -22,22 +24,25 @@ function HomePage({ className }) {
 
   return (
     <div className={className}>
-      <div className="dead-line">
-        <Time />
-        <PieChart
-          siteName="生活市集"
-          siteColor="rgba(255, 107, 0, 1)"
-          number={buy123Number}
-        />
-        <PieChart
-          siteName="松果購物"
-          siteColor="rgba(247, 66, 47, 1)"
-          number={pconeNumber}
-        />
-        <SiteNumber />
-      </div>
-      <Map />
-      <Background />
+      <Globalprovider>
+        <div className="dead-line">
+          <Time />
+          <PieChart
+            siteName="生活市集"
+            siteColor="rgba(255, 107, 0, 1)"
+            number={buy123Number}
+          />
+          <PieChart
+            siteName="松果購物"
+            siteColor="rgba(247, 66, 47, 1)"
+            number={pconeNumber}
+          />
+          <SiteNumber />
+        </div>
+        <Map />
+        <Background />
+        <Celebrate />
+      </Globalprovider>
     </div>
   );
 }

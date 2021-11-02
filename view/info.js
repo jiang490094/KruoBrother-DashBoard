@@ -221,8 +221,7 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       }
     }
   }, [poxitionX]);
-  console.log(country);
-  console.log(x, y);
+
   return (
     <Info
       poxitionX={x}

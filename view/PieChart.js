@@ -25,6 +25,8 @@ PieChart.propTypes = {
 };
 
 export default styled(PieChart)`
+  position: fixed;
+  right: 0;
   width: 500px;
   margin-left: 15px;
 `;

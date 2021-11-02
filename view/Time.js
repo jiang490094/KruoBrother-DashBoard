@@ -11,9 +11,12 @@ const Time = ({ className }) => {
   let word = "";
 
   useEffect(() => {
-    setInterval(() => {
+    const timerID = setInterval(() => {
       setNow(dayjs().format("HH:mm:ss"));
     }, 1000);
+    return function cleanup() {
+      clearInterval(timerID);
+    };
   }, [now]);
 
   if (nowDate === "11/11/2021") {
