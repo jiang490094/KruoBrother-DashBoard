@@ -39,9 +39,9 @@ const Map = ({ className }) => {
     setCount(nextCount);
     setCountry(countryId[nextCount]);
   };
-  const PositionChange = (Y) => {
+  const PositionChange = (X, Y) => {
     setTimeout(() => {
-      mapRef.current.style.transform = `scale(2) translate(15vw,${Y}vh)`;
+      mapRef.current.style.transform = `scale(2) translate(${X}vw,${Y}vh)`;
     }, 4000);
   };
   useEffect(() => {
@@ -70,13 +70,13 @@ const Map = ({ className }) => {
   useEffect(() => {
     if (mapRef.current) {
       if (country === "#Miaoli") {
-        PositionChange(10);
+        PositionChange(15, 10);
       }
       if (country === "#Yunlin") {
-        PositionChange(-15);
+        PositionChange(20, -15);
       }
       if (country === "#Pingtung") {
-        PositionChange(30);
+        PositionChange(10, 35);
       }
     }
   }, [position]);
@@ -1488,7 +1488,7 @@ export default styled(Map)`
   transform: translateX(-50%);
   svg {
     height: 90%;
-    transform: scale(2) translate(10vw, 30vh);
+    transform: scale(2) translate(10vw, 35vh);
     transition: transform 1s;
   }
 
