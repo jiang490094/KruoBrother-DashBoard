@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import CountUp from "react-countup";
 
-const PieChartTitle = ({ className, number }) => {
+const PieChartTitle = ({ className, siteName, number, siteColor }) => {
   return (
     <>
       <div className={className}>
@@ -9,7 +10,7 @@ const PieChartTitle = ({ className, number }) => {
         <div className="words">
           <div className="previous-word">
             <span className="tiny-words">集團</span>
-            <span className="title-words">生活市集</span>
+            <span className="title-words">{siteName}</span>
             <span>
               <p className="category-words">分類排行</p>
               <p className="eight-words">前8名熱門排行</p>
@@ -19,7 +20,12 @@ const PieChartTitle = ({ className, number }) => {
 
         <div className="number">
           <p className="eight-words">營收占比</p>
-          <p className="title-words number-font">{number}％</p>
+          <p
+            className="title-words number-font"
+            style={{ color: `${siteColor}` }}
+          >
+            <CountUp start={0} end={number} duration={3} />%
+          </p>
         </div>
 
         <img className="under-line" src="/Images/pie-under-line.png" />
@@ -30,6 +36,8 @@ const PieChartTitle = ({ className, number }) => {
 
 PieChartTitle.propTypes = {
   className: PropTypes.string.isRequired,
+  siteName: PropTypes.string.isRequired,
+  siteColor: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired
 };
 
