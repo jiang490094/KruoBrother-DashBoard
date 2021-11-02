@@ -96,6 +96,7 @@ const Celebrate = ({ className }) => {
 
 export default styled(Celebrate)`
   position: fixed;
+  z-index: 9999;
 `;
 
 Celebrate.propTypes = {
