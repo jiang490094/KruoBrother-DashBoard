@@ -10,6 +10,7 @@ const PieChart = dynamic(() => import("../view/PieChart"));
 const Background = dynamic(() => import("../view/background"));
 const Celebrate = dynamic(() => import("../view/celebrate"));
 const SiteNumber = dynamic(() => import("../view/SiteNumber"));
+const Title = dynamic(() => import("../view/Title"));
 function HomePage({ className }) {
   const data = {
     total_rev: 3376762.4661478,
@@ -39,6 +40,7 @@ function HomePage({ className }) {
           />
           <SiteNumber />
         </div>
+        <Title />
         <Map />
         <Background />
         <Celebrate />

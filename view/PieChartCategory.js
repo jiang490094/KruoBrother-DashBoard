@@ -2,8 +2,10 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import * as d3 from "d3";
 import { useEffect } from "react";
+import CountUp from "react-countup";
 
-const PieChartCategory = ({ className }) => {
+const PieChartCategory = ({ className, siteName }) => {
+  // const PieChartCategory = ({ className, siteName, number }) => {
   const data = [
     "照明燈具",
     "照明燈具",
@@ -17,7 +19,7 @@ const PieChartCategory = ({ className }) => {
     "照明燈具"
   ];
 
-  const pieDatas = [
+  let pieDatas = [
     {
       series: [
         {
@@ -62,31 +64,31 @@ const PieChartCategory = ({ className }) => {
 
   const chartColor = {
     first: {
-      color: "rgba(82, 0, 255, 0.8)"
+      color: "rgba(24, 254, 254, 0.8)"
     },
     second: {
-      color: "rgba(24, 254, 254, 0.8)"
+      color: "rgba(255, 153, 0, 0.8)"
     },
     third: {
       color: "rgba(151, 0, 175, 0.8)"
     },
     fourth: {
-      color: "rgba(255, 0, 214, 0.8)"
+      color: "rgba(255, 92, 22, 0.8)"
     },
     fifth: {
       color: "rgba(255, 0, 214, 0.8)"
     },
     sixth: {
-      color: "rgba(255, 153, 0, 0.8)"
-    },
-    seventh: {
-      color: "rgba(255, 92, 22, 0.8)"
-    },
-    eighth: {
       color: "rgba(255, 61, 0, 0.8)"
     },
-    ninth: {
+    seventh: {
+      color: "rgba(82, 0, 255, 0.8)"
+    },
+    eighth: {
       color: "rgba(6, 132, 248, 0.8)"
+    },
+    ninth: {
+      color: "rgba(149, 132, 255, 0.8)"
     },
     tenth: {
       color: "rgba(5, 0, 232, 0.8)"
@@ -108,22 +110,24 @@ const PieChartCategory = ({ className }) => {
   //   "rgba(5, 0, 232, 1)"
   // ];
 
-  // const color = [
-  //   "rgba(82, 0, 255, 1)",
-  //   "rgba(24, 254, 254, 1)",
-  //   "rgba(151, 0, 175, 1)",
-  //   "rgba(255, 0, 214, 1)",
-  //   "rgba(255, 0, 214, 1)",
-  //   "rgba(255, 153, 0, 1)",
-  //   "rgba(255, 92, 22, 1)",
-  //   "rgba(255, 61, 0, 1)",
-  //   "rgba(6, 132, 248, 1)",
-  //   "rgba(5, 0, 232, 1)"
-  // ];
+  const color = [
+    "rgba(24, 254, 254, 1)",
+    "rgba(255, 153, 0, 1)",
+    "rgba(151, 0, 175, 1)",
+    "rgba(255, 92, 22, 1)",
+    "rgba(255, 0, 214, 1)",
+    "rgba(255, 61, 0, 1)",
+    "rgba(82, 0, 255, 1)",
+    "rgba(6, 132, 248, 1)",
+    "rgba(149, 132, 255, 1)",
+    "rgba(5, 0, 232, 1)"
+  ];
 
   function pie_chart(root) {
     const width = document.querySelector(`#${root}`).clientWidth,
       height = width;
+
+    console.log(width);
 
     const total = pieDatas[0].series
       .map((data) => data.value)
@@ -133,7 +137,6 @@ const PieChartCategory = ({ className }) => {
       name: data.name,
       series: data.series.map((el) => ({
         name: el.name,
-        clicks: el.value,
         value: el.value === 0 ? 0 : ((el.value / total) * 100).toFixed(1)
       }))
     }));
@@ -150,9 +153,7 @@ const PieChartCategory = ({ className }) => {
       .arc()
       .innerRadius(0)
       .outerRadius(width / 2);
-
     const pie = d3.pie().value((d) => d.value);
-
     svg
       .selectAll("path")
       .data(pie(newData[0].series))
@@ -164,97 +165,73 @@ const PieChartCategory = ({ className }) => {
   }
 
   useEffect(() => {
-    pie_chart("pie");
-  }, []);
-
-  useEffect(() => {
-    const width = 40;
-    const height = 36;
-    const svg = d3.select("svg").attr("width", width).attr("height", height);
-    const rootLayer = svg.append("g");
-    const pieChartLayer = rootLayer
-      .append("g")
-      .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
-    // 以上不重要，只是初始畫圖層與置中。
-
-    // 產生一園內半徑長50，外半徑長100，的環狀圖
-    const arc = d3.arc().innerRadius(0).outerRadius(13.44);
-
-    // 資料轉為角度資料
-    const datas = [11, 22, 33];
-    const arcs = d3.pie()(datas);
-
-    // 使用`enter`新增`path`元件並設定繪製圖屬性`d`。
-    pieChartLayer
-      .selectAll("path")
-      .data(arcs)
-      .enter()
-      .append("path")
-      .attr("d", (data) => arc(data))
-      .attr("stroke", "white");
-    // .attr("fill", "pink", "white");
+    if (siteName == "生活市集") pie_chart("pie");
   }, []);
 
   return (
-    <>
-      <div className={className}>
-        <div>
-          {data.map((i, key) => {
-            if (key % 2 == 0) {
-              return (
-                <div className="category-list">
-                  <div className="category-number">
-                    <svg></svg>
-                  </div>
-                  <div className="category-name">{i + (key + 1)}</div>
+    <div className={className}>
+      <div>
+        {data.map((i, index) => {
+          if (index % 2 == 0) {
+            return (
+              <div className="category-list" key={index}>
+                <div
+                  className="category-number"
+                  style={{ borderLeft: `4px solid ${color[index]}` }}
+                >
+                  <CountUp start={0} end={20} duration={2} />%
                 </div>
-              );
-            }
-          })}
-        </div>
-        <div id="pie"></div>
-        <div>
-          {data.map((i, key) => {
-            if (key % 2 != 0) {
-              return (
-                <div className="category-list">
-                  <div className="category-number">
-                    <svg></svg>
-                  </div>
-                  <div className="category-name">{i + (key + 1)}</div>
-                </div>
-              );
-            }
-          })}
-        </div>
+                <div className="category-name">{i + (index + 1)}</div>
+              </div>
+            );
+          }
+        })}
       </div>
-    </>
+      <div id="pie"></div>
+      <div>
+        {data.map((i, index) => {
+          if (index % 2 != 0) {
+            return (
+              <div className="category-list" key={index}>
+                <div
+                  className="category-number"
+                  style={{ borderLeft: `4px solid ${color[index]}` }}
+                >
+                  <CountUp start={0} end={20} duration={2} />%
+                </div>
+                <div className="category-name">{i + (index + 1)}</div>
+              </div>
+            );
+          }
+        })}
+      </div>
+    </div>
   );
 };
 
 PieChartCategory.propTypes = {
-  className: PropTypes.string.isRequired
+  className: PropTypes.string.isRequired,
+  siteName: PropTypes.string.isRequired
 };
 
 export default styled(PieChartCategory)`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 58px;
   .category-list {
     display: flex;
     margin-bottom: 4px;
     .category-number {
       width: 40px;
       height: 36px;
-      background-color: black;
       margin-right: 4px;
-      border-left: 4px solid white;
+      line-height: 36px;
+      text-align: center;
     }
 
     .category-name {
-      width: 100px;
+      /* width: 100px; */
       height: 36px;
-      background-color: black;
       padding-left: 9px;
       color: white;
       font-size: 14px;
