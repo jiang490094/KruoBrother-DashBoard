@@ -5,10 +5,7 @@ import { resetStyle } from "./resetStyle";
 const GlobalStyles = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
   ${resetStyle}
-  @font-face {
-        font-family: "Prohibition";
-        src: url("fonts/Prohibition-Lines.ttf?") format("truetype")
-    }
+
     body {
     font-family: PingFangTC, Arial, Helvetica, Microsoft JhengHei;
   }
