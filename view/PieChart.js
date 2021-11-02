@@ -4,27 +4,24 @@ import styled from "styled-components";
 import PieChartTitle from "./PieChartTitle";
 import PieChartCategory from "./PieChartCategory";
 
-const PieChart = ({ className }) => {
-  const data = {
-    total_rev: 3376762.4661478,
-    stie_rev: {
-      buy123: 3254734.1907595,
-      pcone: 122028.27538828
-    }
-  };
-
-  let number = Math.round((data.stie_rev.buy123 / data.total_rev) * 100);
-
+const PieChart = ({ className, siteName, siteColor, number }) => {
   return (
     <div className={className}>
-      <PieChartTitle number={number} />
+      <PieChartTitle
+        siteName={siteName}
+        siteColor={siteColor}
+        number={number}
+      />
       <PieChartCategory />
     </div>
   );
 };
 
 PieChart.propTypes = {
-  className: PropTypes.string.isRequired
+  className: PropTypes.string.isRequired,
+  siteName: PropTypes.string.isRequired,
+  siteColor: PropTypes.string.isRequired,
+  number: PropTypes.number.isRequired
 };
 
 export default styled(PieChart)`
