@@ -8,7 +8,8 @@ const Info = styled.div`
   top: ${(props) => props.poxitionY + "px"};
 
   .vector {
-    transform: translateY(-20px);
+    transform: ${(props) =>
+      `translate(${props.vx}px,${props.vy}px) rotate(${props.vr}deg)`};
   }
   .info-container {
     position: relative;
@@ -68,11 +69,18 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
   let y = poxitionY;
   let cx = 50;
   let cy = -130;
+  let vx = 0;
+  let vy = -20;
+  let vr = 0;
   let countryName = country;
   switch (country) {
     case "#Keelung":
       x = x + 20;
       y = y + 5;
+      cx = -420;
+      cy = -160;
+      vx = -45;
+      vr = 90;
       countryName = "基隆市";
       break;
     case "#Taipei":
@@ -86,8 +94,13 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       countryName = "新北市";
       break;
     case "#Yilan":
-      x = x + 150;
-      y = y + 180;
+      x = x + 100;
+      y = y + 220;
+      cx = -100;
+      cy = -280;
+      vx = -10;
+      vy = -25;
+      vr = 150;
       countryName = "宜蘭市";
       break;
     case "#Taoyuan":
@@ -122,7 +135,12 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       break;
     case "#Hualian":
       x = x + 220;
-      y = y + 150;
+      y = y + 280;
+      cx = -150;
+      cy = -280;
+      vx = -20;
+      vy = -30;
+      vr = 150;
       countryName = "花蓮市";
       break;
     case "#Yunlin":
@@ -136,13 +154,23 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       countryName = "彰化市";
       break;
     case "#Chiayi-city":
-      x = x + 5;
+      x = x + 15;
       y = y + 5;
+      cx = 10;
+      cy = 20;
+      vx = -10;
+      vy = 20;
+      vr = 270;
       countryName = "嘉義市";
       break;
     case "#Chiayi":
       x = x + 105;
       y = y + 100;
+      cx = 10;
+      cy = 20;
+      vx = -10;
+      vy = 20;
+      vr = 270;
       countryName = "嘉義縣";
       break;
     case "#Tainan":
@@ -158,6 +186,11 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
     case "#Taidon":
       x = x + 150;
       y = y + 300;
+      cx = -150;
+      cy = -280;
+      vx = -20;
+      vy = -30;
+      vr = 150;
       countryName = "台東市";
       break;
     case "#Pingtung":
@@ -191,7 +224,16 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
   console.log(country);
   console.log(x, y);
   return (
-    <Info poxitionX={x} poxitionY={y} ref={infoRef} cx={cx} cy={cy}>
+    <Info
+      poxitionX={x}
+      poxitionY={y}
+      ref={infoRef}
+      cx={cx}
+      cy={cy}
+      vx={vx}
+      vy={vy}
+      vr={vr}
+    >
       <img src="Images/buy123/point.svg" className="point" />
       <img src="Images/buy123/Vector.svg" className="vector" />
       <div className="info-container">
