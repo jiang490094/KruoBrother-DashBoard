@@ -247,12 +247,6 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       }
     }
   }, [poxitionX]);
-  // useEffect(() => {
-  //   const cityAmount = cityData[countryName];
-  //   console.log(countryName);
-  //   setBuyNumber(cityAmount.buy123.amount);
-  //   setPconeNumber(cityAmount.pcone.amount);
-  // }, [country]);
 
   return (
     <Info

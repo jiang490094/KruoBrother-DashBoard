@@ -23,7 +23,7 @@ const Globalprovider = ({ children, moduleData }) => {
   }, []);
   useEffect(() => {
     const totalPrice = total?.buy123?.amount + total?.pcone?.amount;
-    if (totalPrice / 100000 > 1) {
+    if (totalPrice / 4000000 > 1) {
       setShow(true);
     }
     setTimeout(() => {

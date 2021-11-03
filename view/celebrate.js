@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 
@@ -24,7 +24,6 @@ const breatheAnimation = keyframes`
 
 const Container = styled.div`
   position: relative;
-  display: ${(props) => (props.show ? "block" : "none")};
   .income {
     position: absolute;
     top: 50%;
@@ -45,41 +44,20 @@ const Container = styled.div`
         0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
     }
     &:nth-child(2) {
-      color: #0091ea;
-      opacity: 0.5;
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073,
-        0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-    }
-    &:nth-child(3) {
-      color: #ff9100;
-      opacity: 0.5;
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073,
-        0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-    }
-    &:nth-child(4) {
       -webkit-text-stroke-width: 3px;
       color: white;
     }
   }
 `;
 const Celebrate = ({ className }) => {
-  let number = 100000000;
-  const displayNum = number.toLocaleString(undefined);
-  const { show } = useContext(GlobalContext);
-  useEffect(() => {
-    const incomeText = document.getElementsByClassName("income");
-    for (let i = 0; i < incomeText.length; i++) {
-      incomeText[i].style.animtionDuration = "2s";
-      incomeText[i].style.animationDelay = `${0.8 - i / 4}s`;
-    }
-  }, []);
-
+  const { show, total } = useContext(GlobalContext);
+  const displayNum = (
+    total?.buy123?.amount + total?.pcone?.amount
+  ).toLocaleString(undefined);
   if (!show) return null;
   return (
     <div className={className}>
       <Container show={show}>
-        <span className="income">${displayNum}</span>
-        <span className="income">${displayNum}</span>
         <span className="income">${displayNum}</span>
         <span className="income">${displayNum}</span>
         <video autoPlay loop id="videotag" width="1920" height="1080">
