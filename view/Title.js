@@ -3,17 +3,14 @@ import styled from "styled-components";
 import { useCountUp } from "react-countup";
 import { useContext } from "react";
 
-import { loadItem } from "../util";
 import { GlobalContext } from "../provider/globalprovider";
 
 const Title = ({ className }) => {
   const { totalPrice } = useContext(GlobalContext);
-  let lastTime = parseInt(loadItem("lastAmount") - 5000);
-  if (lastTime < 0) lastTime = 0;
 
   useCountUp({
     ref: "countUpRef",
-    start: lastTime,
+    start: 0,
     end: totalPrice,
     duration: 300,
     separator: ","

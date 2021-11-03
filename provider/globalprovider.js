@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import fetchData, { saveItem } from "../util";
+import fetchData, { saveItem, loadItem } from "../util";
 import { RankData } from "../textCase/testCase";
 
 export const GlobalContext = createContext({});
@@ -13,18 +13,15 @@ let totalPrice = 0;
 let show = false;
 let category = {};
 let categories = [];
+let openRecords = [];
+let displayIncome = 0;
+saveItem([], "opened");
+// const priceArray = [8000000, 4000000];
 const Globalprovider = ({ children, moduleData }) => {
   const [heartBeat, setHearBeat] = useState(0);
   cityData = moduleData?.city;
   total = moduleData?.total;
   totalPrice = total?.buy123?.amount + total?.pcone?.amount;
-
-  // const [cityData, setCityData] = useState(moduleData?.city);
-  // const [total, setTotal] = useState(moduleData?.total);
-  // const [totalPrice, setTotalPrice] = useState(0);
-  // const [show, setShow] = useState(false);
-  // const [category, setCategory] = useState({});
-  // const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const timerID = setInterval(() => {
@@ -35,34 +32,77 @@ const Globalprovider = ({ children, moduleData }) => {
     };
   }, []);
   useEffect(() => {
-    // const NewtotalPrice = total?.buy123?.amount + total?.pcone?.amount;
-    // totalPrice = NewtotalPrice;
-    // setTotalPrice(totalPrice);
     const number = document.getElementById("countUpRef");
-    console.log("income", number.textContent);
-    // if (totalPrice / 4000000 > 1) {
-    //   show = true;
-    // }
-    // setTimeout(() => {
-    //   show = false;
-    // }, 12000);
+    let currentIncome = number.textContent;
+    currentIncome = parseInt(currentIncome.replaceAll(",", ""));
+    // priceArray.forEach((item, index) => {
+    //   if (currentIncome / item > 1) {
+    //     const records = loadItem("opened");
+    //     const IsAlreadyOpen = records.includes(index);
+    //     displayIncome = item;
+    //     if (IsAlreadyOpen) {
+    //       return;
+    //     } else {
+    //       openRecords.push(index);
+    //       saveItem(openRecords, "opened");
+    //       console.log("aloha");
+    //       show = true;
+    //       setTimeout(() => {
+    //         show = false;
+    //       }, 12000);
+    //       return;
+    //     }
+    //   } else {
+    //     return;
+    //   }
+    // });
+    if (currentIncome / 8000000 > 1) {
+      const records = loadItem("opened");
+      const IsAlreadyOpen = records.includes(2);
+      displayIncome = 8000000;
+      if (IsAlreadyOpen) {
+        return;
+      } else {
+        openRecords.push(2);
+        saveItem(openRecords, "opened");
+        console.log("ohiyo");
+        show = true;
+        setTimeout(() => {
+          show = false;
+        }, 12000);
+        return;
+      }
+    }
+    if (currentIncome / 4000000 > 1) {
+      const records = loadItem("opened");
+      const IsAlreadyOpen = records.includes(1);
+      displayIncome = 4000000;
+      if (IsAlreadyOpen) {
+        return;
+      } else {
+        openRecords.push(1);
+        saveItem(openRecords, "opened");
+        console.log("ohiyo");
+        show = true;
+        setTimeout(() => {
+          show = false;
+        }, 12000);
+        return;
+      }
+    }
   }, [heartBeat]);
 
   const fetchAll = async (timer) => {
     if (timer % 30 === 0) {
-      saveItem("lastAmount", totalPrice);
       const alldata = await fetchData();
       cityData = alldata?.data?.city;
       total = alldata?.data?.total;
       const NewtotalPrice = total?.buy123?.amount + total?.pcone?.amount;
       totalPrice = NewtotalPrice;
-      // setCityData(alldata?.data?.city);
-      // setTotal(alldata?.data?.total);
     } else {
       return;
     }
   };
-  // const sorting = (originData,)
   useEffect(() => {
     const nextObj = RankData.shift();
     let newObject = { ...rank };
@@ -116,7 +156,8 @@ const Globalprovider = ({ children, moduleData }) => {
         total,
         show,
         categories,
-        totalPrice
+        totalPrice,
+        displayIncome
       }}
     >
       {children}

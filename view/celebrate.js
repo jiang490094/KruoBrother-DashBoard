@@ -50,10 +50,9 @@ const Container = styled.div`
   }
 `;
 const Celebrate = ({ className }) => {
-  const { show, total } = useContext(GlobalContext);
-  const displayNum = (
-    total?.buy123?.amount + total?.pcone?.amount
-  ).toLocaleString(undefined);
+  const { show, displayIncome } = useContext(GlobalContext);
+  const displayNum = displayIncome.toLocaleString(undefined);
+  console.log("show", displayIncome);
   if (!show) return null;
   return (
     <div className={className}>

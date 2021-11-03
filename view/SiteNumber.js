@@ -20,8 +20,8 @@ const SiteNumber = ({ className }) => {
             $
             <CountUp
               start={0}
-              end={total?.pcone?.amount}
-              duration={180}
+              end={total?.buy123?.amount}
+              duration={300}
               separator=","
             />
           </span>
@@ -35,8 +35,8 @@ const SiteNumber = ({ className }) => {
             $
             <CountUp
               start={0}
-              end={total?.buy123?.amount}
-              duration={180}
+              end={total?.pcone?.amount}
+              duration={300}
               separator=","
             />
           </span>
