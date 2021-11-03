@@ -21,7 +21,7 @@ const PieChartCategory = ({ className, siteName }) => {
     "照明燈具"
   ];
 
-  // let pieDatas = [categories];
+  // let pieDatas = [categorie];
 
   // const chartColor = {
   //   first: {
