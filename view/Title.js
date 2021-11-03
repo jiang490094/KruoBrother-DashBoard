@@ -1,8 +1,23 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import CountUp from "react-countup";
+import { useCountUp } from "react-countup";
+import { useContext } from "react";
+
+import { loadItem } from "../util";
+import { GlobalContext } from "../provider/globalprovider";
 
 const Title = ({ className }) => {
+  const { totalPrice } = useContext(GlobalContext);
+  let lastTime = parseInt(loadItem("lastAmount") - 5000);
+  if (lastTime < 0) lastTime = 0;
+
+  useCountUp({
+    ref: "countUpRef",
+    start: lastTime,
+    end: totalPrice,
+    duration: 300,
+    separator: ","
+  });
   return (
     <div className={className}>
       <div>
@@ -11,7 +26,7 @@ const Title = ({ className }) => {
         <img src="Images/title-total-line.png" />
       </div>
       <div className="title-number">
-        $<CountUp start={0} end={123456} duration={3} separator="," />
+        $ <span id="countUpRef" className="income-all-number" />
       </div>
     </div>
   );

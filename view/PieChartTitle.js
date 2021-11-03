@@ -1,8 +1,18 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import CountUp from "react-countup";
+import { useContext } from "react";
 
-const PieChartTitle = ({ className, siteName, number, siteColor }) => {
+import { GlobalContext } from "../provider/globalprovider";
+
+const PieChartTitle = ({ className, siteName, siteColor }) => {
+  const { totalPrice, total } = useContext(GlobalContext);
+  let price = total?.buy123?.amount;
+  if (siteName === "松果購物") {
+    price = total?.pcone?.amount;
+  }
+  const value = Math.round((price / totalPrice) * 100);
+
   return (
     <>
       <div className={className}>
@@ -24,7 +34,7 @@ const PieChartTitle = ({ className, siteName, number, siteColor }) => {
             className="title-words number-font"
             style={{ color: `${siteColor}` }}
           >
-            <CountUp start={0} end={number} duration={3} />%
+            <CountUp start={0} end={value} duration={30} />%
           </p>
         </div>
 

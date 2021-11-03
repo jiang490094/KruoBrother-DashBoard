@@ -1,20 +1,30 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import fetchData from "../util";
+import fetchData, { saveItem } from "../util";
 import { RankData } from "../textCase/testCase";
 
 export const GlobalContext = createContext({});
-
+let rank = {};
+let rankDisplay = [];
+let cityData = {};
+let total = {};
+let totalPrice = 0;
+let show = false;
+let category = {};
+let categories = [];
 const Globalprovider = ({ children, moduleData }) => {
   const [heartBeat, setHearBeat] = useState(0);
-  const [rank, setRank] = useState({});
-  const [rankDisplay, setRankDisplay] = useState([]);
-  const [cityData, setCityData] = useState(moduleData?.city);
-  const [total, setTotal] = useState(moduleData?.total);
-  const [show, setShow] = useState(false);
-  const [category, setCategory] = useState({});
-  const [categories, setCategories] = useState([]);
+  cityData = moduleData?.city;
+  total = moduleData?.total;
+  totalPrice = total?.buy123?.amount + total?.pcone?.amount;
+
+  // const [cityData, setCityData] = useState(moduleData?.city);
+  // const [total, setTotal] = useState(moduleData?.total);
+  // const [totalPrice, setTotalPrice] = useState(0);
+  // const [show, setShow] = useState(false);
+  // const [category, setCategory] = useState({});
+  // const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const timerID = setInterval(() => {
@@ -25,25 +35,34 @@ const Globalprovider = ({ children, moduleData }) => {
     };
   }, []);
   useEffect(() => {
-    const totalPrice = total?.buy123?.amount + total?.pcone?.amount;
-    if (totalPrice / 4000000 > 1) {
-      setShow(true);
-    }
-    setTimeout(() => {
-      setShow(false);
-    }, 12000);
-  }, [total]);
+    // const NewtotalPrice = total?.buy123?.amount + total?.pcone?.amount;
+    // totalPrice = NewtotalPrice;
+    // setTotalPrice(totalPrice);
+    const number = document.getElementById("countUpRef");
+    console.log("income", number.textContent);
+    // if (totalPrice / 4000000 > 1) {
+    //   show = true;
+    // }
+    // setTimeout(() => {
+    //   show = false;
+    // }, 12000);
+  }, [heartBeat]);
 
   const fetchAll = async (timer) => {
     if (timer % 30 === 0) {
+      saveItem("lastAmount", totalPrice);
       const alldata = await fetchData();
-      setCityData(alldata?.data?.city);
-      setTotal(alldata?.data?.total);
+      cityData = alldata?.data?.city;
+      total = alldata?.data?.total;
+      const NewtotalPrice = total?.buy123?.amount + total?.pcone?.amount;
+      totalPrice = NewtotalPrice;
+      // setCityData(alldata?.data?.city);
+      // setTotal(alldata?.data?.total);
     } else {
       return;
     }
   };
-
+  // const sorting = (originData,)
   useEffect(() => {
     const nextObj = RankData.shift();
     let newObject = { ...rank };
@@ -54,14 +73,14 @@ const Globalprovider = ({ children, moduleData }) => {
       newObject[nextObj?.item_id].amount = parseInt(nextObj?.amount);
       newObject[nextObj?.item_id].item_name = nextObj?.item_name;
     }
-    setRank(newObject);
+    rank = newObject;
     const newArray = Object.values(newObject);
 
     newArray.sort(function (a, b) {
       return b.amount - a.amount;
     });
     const finalArray = newArray.slice(0, 10);
-    setRankDisplay(finalArray);
+    rankDisplay = finalArray;
     fetchAll(heartBeat);
   }, [heartBeat]);
 
@@ -77,21 +96,28 @@ const Globalprovider = ({ children, moduleData }) => {
       categoryList[nextObj?.category_name].category_name =
         nextObj?.category_name;
     }
-
-    setCategory(categoryList);
+    category = categoryList;
 
     const newArray = Object.values(categoryList);
 
     newArray.sort(function (a, b) {
       return b.amount - a.amount;
     });
-    setCategories(finalArray);
+    categories = finalArray;
     const finalArray = newArray.slice(0, 10);
   }, [heartBeat]);
 
   return (
     <GlobalContext.Provider
-      value={{ heartBeat, rankDisplay, cityData, total, show, categories }}
+      value={{
+        heartBeat,
+        rankDisplay,
+        cityData,
+        total,
+        show,
+        categories,
+        totalPrice
+      }}
     >
       {children}
     </GlobalContext.Provider>
