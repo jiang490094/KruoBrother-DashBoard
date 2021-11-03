@@ -37,6 +37,7 @@ SiteNumber.propTypes = {
 };
 
 export default styled(SiteNumber)`
+  color: white;
   width: 500px;
   position: fixed;
   right: 26px;

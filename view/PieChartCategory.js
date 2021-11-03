@@ -223,6 +223,7 @@ export default styled(PieChartCategory)`
   display: flex;
   justify-content: space-between;
   margin-bottom: 58px;
+  color: white;
   .category-list {
     display: flex;
     margin-bottom: 4px;
