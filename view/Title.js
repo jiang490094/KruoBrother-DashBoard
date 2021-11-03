@@ -27,6 +27,7 @@ export default styled(Title)`
   left: 571px;
   top: 6px;
   z-index: 1;
+  color: white;
   .title-words {
     font-size: 32px;
     margin-top: 8px;
