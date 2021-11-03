@@ -8,6 +8,10 @@ import { GlobalContext } from "../provider/globalprovider";
 
 const PieChartCategory = ({ className, siteName }) => {
   const { categories } = useContext(GlobalContext);
+
+  console.log(categories);
+
+  // const PieChartCategory = ({ className, siteName, number }) => {
   const data = [
     "照明燈具",
     "照明燈具",
@@ -21,40 +25,81 @@ const PieChartCategory = ({ className, siteName }) => {
     "照明燈具"
   ];
 
-  // let pieDatas = [categorie];
+  let pieDatas = [
+    {
+      series: [
+        {
+          name: "first",
+          value: 307
+        },
+        {
+          name: "second",
+          value: 89
+        },
+        {
+          name: "third",
+          value: 146
+        },
+        {
+          name: "fourth",
+          value: 252
+        },
+        {
+          name: "fifth",
+          value: 252
+        },
+        {
+          name: "sixth",
+          value: 252
+        },
+        {
+          name: "eighth",
+          value: 252
+        },
+        {
+          name: "ninth",
+          value: 252
+        },
+        {
+          name: "tenth",
+          value: 252
+        }
+      ]
+    }
+  ];
 
-  // const chartColor = {
-  //   first: {
-  //     color: "rgba(24, 254, 254, 0.8)"
-  //   },
-  //   second: {
-  //     color: "rgba(255, 153, 0, 0.8)"
-  //   },
-  //   third: {
-  //     color: "rgba(151, 0, 175, 0.8)"
-  //   },
-  //   fourth: {
-  //     color: "rgba(255, 92, 22, 0.8)"
-  //   },
-  //   fifth: {
-  //     color: "rgba(255, 0, 214, 0.8)"
-  //   },
-  //   sixth: {
-  //     color: "rgba(255, 61, 0, 0.8)"
-  //   },
-  //   seventh: {
-  //     color: "rgba(82, 0, 255, 0.8)"
-  //   },
-  //   eighth: {
-  //     color: "rgba(6, 132, 248, 0.8)"
-  //   },
-  //   ninth: {
-  //     color: "rgba(149, 132, 255, 0.8)"
-  //   },
-  //   tenth: {
-  //     color: "rgba(5, 0, 232, 0.8)"
-  //   }
-  // };
+  const chartColor = {
+    first: {
+      color: "rgba(24, 254, 254, 0.8)"
+    },
+    second: {
+      color: "rgba(255, 153, 0, 0.8)"
+    },
+    third: {
+      color: "rgba(151, 0, 175, 0.8)"
+    },
+    fourth: {
+      color: "rgba(255, 92, 22, 0.8)"
+    },
+    fifth: {
+      color: "rgba(255, 0, 214, 0.8)"
+    },
+    sixth: {
+      color: "rgba(255, 61, 0, 0.8)"
+    },
+    seventh: {
+      color: "rgba(82, 0, 255, 0.8)"
+    },
+    eighth: {
+      color: "rgba(6, 132, 248, 0.8)"
+    },
+    ninth: {
+      color: "rgba(149, 132, 255, 0.8)"
+    },
+    tenth: {
+      color: "rgba(5, 0, 232, 0.8)"
+    }
+  };
 
   // const color1 = [
   //   "rgba(82, 0, 255, 1)",
@@ -85,30 +130,20 @@ const PieChartCategory = ({ className, siteName }) => {
   ];
 
   function pie_chart(root) {
-    console.log("categories", categories);
-
     const width = document.querySelector(`#${root}`).clientWidth,
       height = width;
-    const total = categories
-      .map((data) => data.amount)
-      .reduce((current, acc) => current + acc);
-    // const total = pieDatas[0].series
-    //   .map((data) => data.value)
-    //   .reduce((current, acc) => current + acc);
 
-    const newData = categories.map((data) => ({
-      name: data.category_name,
-      amount: data.amount.map((el) => ({
-        value: el.amount === 0 ? 0 : ((el.amount / total) * 100).toFixed(1)
+    const total = pieDatas[0].series
+      .map((data) => data.value)
+      .reduce((current, acc) => current + acc);
+
+    const newData = pieDatas.map((data) => ({
+      name: data.name,
+      series: data.series.map((el) => ({
+        name: el.name,
+        value: el.value === 0 ? 0 : ((el.value / total) * 100).toFixed(1)
       }))
     }));
-    // const newData = pieDatas.map((data) => ({
-    //   name: data.name,
-    //   series: data.series.map((el) => ({
-    //     name: el.name,
-    //     value: el.value === 0 ? 0 : ((el.value / total) * 100).toFixed(1)
-    //   }))
-    // }));
 
     const svg = d3
       .select(document.querySelector(`#${root}`))
@@ -130,7 +165,7 @@ const PieChartCategory = ({ className, siteName }) => {
       .append("g")
       .append("path")
       .attr("d", arc)
-      .attr("fill", (d, i) => color[i]);
+      .attr("fill", (d) => chartColor[d.data.name].color);
   }
 
   useEffect(() => {
