@@ -5,14 +5,16 @@ import PieChartTitle from "./PieChartTitle";
 import PieChartCategory from "./PieChartCategory";
 
 const PieChart = ({ className, siteName, siteColor, number }) => {
+  let top = "";
+  if (siteName === "松果購物") top = "454px";
   return (
-    <div className={className}>
+    <div className={className} style={{ top: `${top}` }}>
       <PieChartTitle
         siteName={siteName}
         siteColor={siteColor}
         number={number}
       />
-      <PieChartCategory />
+      <PieChartCategory siteName={siteName} />
     </div>
   );
 };
@@ -26,7 +28,7 @@ PieChart.propTypes = {
 
 export default styled(PieChart)`
   position: fixed;
-  right: 0;
+  right: 20px;
   width: 500px;
   margin-left: 15px;
 `;
