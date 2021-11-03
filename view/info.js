@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useContext } from "react";
 import CountUp from "react-countup";
+
+import { GlobalContext } from "../provider/globalprovider";
 
 const Info = styled.div`
   position: absolute;
@@ -63,7 +65,12 @@ const Info = styled.div`
 `;
 const InfoCard = ({ country, poxitionX, poxitionY }) => {
   const infoRef = useRef(null);
-  const [number, setNumber] = useState(1000);
+  const [InfoNumber, setInfoNumber] = useState({
+    perstange: 0,
+    buyAmount: 0,
+    pconeAmout: 0
+  });
+  const { cityData, total } = useContext(GlobalContext);
   let x = poxitionX;
   let y = poxitionY;
   let cx = 50;
@@ -100,7 +107,7 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       vx = -10;
       vy = -25;
       vr = 150;
-      countryName = "宜蘭市";
+      countryName = "宜蘭縣";
       break;
     case "#Taoyuan":
       x = x + 120;
@@ -120,7 +127,7 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
     case "#Miaoli":
       x = x + 90;
       y = y + 80;
-      countryName = "苗栗市";
+      countryName = "苗栗縣";
       break;
     case "#Taichung":
       x = x + 80;
@@ -130,7 +137,7 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
     case "#Nantou":
       x = x + 120;
       y = y + 150;
-      countryName = "南投市";
+      countryName = "南投縣";
       break;
     case "#Hualian":
       x = x + 220;
@@ -140,17 +147,17 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       vx = -20;
       vy = -30;
       vr = 150;
-      countryName = "花蓮市";
+      countryName = "花蓮縣";
       break;
     case "#Yunlin":
       x = x + 110;
       y = y + 5;
-      countryName = "雲林市";
+      countryName = "雲林縣";
       break;
     case "#Changhua":
       x = x + 80;
       y = y + 180;
-      countryName = "彰化市";
+      countryName = "彰化縣";
       break;
     case "#Chiayi-city":
       x = x + 15;
@@ -190,14 +197,15 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       vx = -20;
       vy = -30;
       vr = 150;
-      countryName = "台東市";
+      countryName = "台東縣";
       break;
     case "#Pingtung":
       x = x + 100;
       y = y + 250;
-      countryName = "屏東市";
+      countryName = "屏東縣";
       break;
   }
+
   const PositionChange = () => {
     setTimeout(() => {
       infoRef.current.style.display = "none";
@@ -208,8 +216,25 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
     }, 5000);
   };
   useEffect(() => {
-    setNumber(999999);
+    const cityAmount = cityData[countryName];
+    console.log(cityData);
 
+    let InfoData = {
+      perstange: 0,
+      buyAmount: 0,
+      pconeAmout: 0
+    };
+    const buyAmount = cityAmount.buy123?.amount || 0;
+    const pconeAmout = cityAmount.pcone?.amount || 0;
+    const buyTotal = total?.buy123?.amount || 0;
+    const pconeTotal = total?.pcone?.amount || 0;
+    const perstange = Math.round(
+      ((buyAmount + pconeAmout) / (buyTotal + pconeTotal).toFixed(2)) * 100
+    );
+    InfoData.perstange = perstange;
+    InfoData.buyAmount = buyAmount;
+    InfoData.pconeAmout = pconeAmout;
+    setInfoNumber(InfoData);
     if (infoRef.current) {
       if (country === "#Miaoli") {
         PositionChange();
@@ -222,9 +247,12 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       }
     }
   }, [poxitionX]);
-  useEffect(() => {
-    setNumber(10000);
-  }, [country]);
+  // useEffect(() => {
+  //   const cityAmount = cityData[countryName];
+  //   console.log(countryName);
+  //   setBuyNumber(cityAmount.buy123.amount);
+  //   setPconeNumber(cityAmount.pcone.amount);
+  // }, [country]);
 
   return (
     <Info
@@ -245,19 +273,31 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
           <img src="Images/pcone-icon.svg" />
 
           <div>
-            $ <CountUp start={0} end={number} duration={2} separator="," />
+            ${" "}
+            <CountUp
+              start={0}
+              end={InfoNumber?.pconeAmout}
+              duration={2}
+              separator=","
+            />
           </div>
         </div>
         <div className="info-detail">
           <img src="Images/buy123-icon.svg" />
           <div>
-            $ <CountUp start={0} end={number} duration={2} separator="," />
+            ${" "}
+            <CountUp
+              start={0}
+              end={InfoNumber?.buyAmount}
+              duration={2}
+              separator=","
+            />
           </div>
         </div>
         <div className="country">{countryName}銷售額</div>
         <div className="perstange">
           <div className="title">全台占比</div>
-          23%
+          {InfoNumber?.perstange}%
         </div>
       </div>
     </Info>

@@ -1,21 +1,18 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+import fetchData from "../util";
 import { RankData } from "../textCase/testCase";
 
 export const GlobalContext = createContext({});
 
-const Globalprovider = ({ children }) => {
+const Globalprovider = ({ children, moduleData }) => {
   const [heartBeat, setHearBeat] = useState(0);
   const [rank, setRank] = useState({});
   const [rankDisplay, setRankDisplay] = useState([]);
-  //   function fetchData() {
-  //     return fetch("https://data.cityofnewyork.us/resource/tg4x-b46p.json")
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         return data;
-  //       });
-  //   }
+  const [cityData, setCityData] = useState(moduleData?.city);
+  const [total, setTotal] = useState(moduleData?.total);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     const timerID = setInterval(() => {
       setHearBeat((prev) => prev + 1);
@@ -25,20 +22,25 @@ const Globalprovider = ({ children }) => {
     };
   }, []);
   useEffect(() => {
-    const fetchAll = async () => {
-      const alldata = await fetch(
-        "https://alansun-nimda.dev.kuobrothers.com/api/get_revenue_by_day"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          return data;
-        });
-      console.log(123, alldata);
+    const totalPrice = total?.buy123?.amount + total?.pcone?.amount;
+    if (totalPrice / 100000 > 1) {
+      setShow(true);
+    }
+    setTimeout(() => {
+      setShow(false);
+    }, 12000);
+  }, [total]);
 
-      return alldata;
-    };
-    fetchAll();
-  }, []);
+  const fetchAll = async (timer) => {
+    if (timer % 30 === 0) {
+      const alldata = await fetchData();
+      setCityData(alldata?.data?.city);
+      setTotal(alldata?.data?.total);
+    } else {
+      return;
+    }
+  };
+
   useEffect(() => {
     const nextObj = RankData.shift();
     let newObject = { ...rank };
@@ -57,10 +59,13 @@ const Globalprovider = ({ children }) => {
     });
     const finalArray = newArray.slice(0, 10);
     setRankDisplay(finalArray);
+    fetchAll(heartBeat);
   }, [heartBeat]);
 
   return (
-    <GlobalContext.Provider value={{ heartBeat, rankDisplay }}>
+    <GlobalContext.Provider
+      value={{ heartBeat, rankDisplay, cityData, total, show }}
+    >
       {children}
     </GlobalContext.Provider>
   );
@@ -68,5 +73,6 @@ const Globalprovider = ({ children }) => {
 
 export default Globalprovider;
 Globalprovider.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+  moduleData: PropTypes.object.isRequired
 };

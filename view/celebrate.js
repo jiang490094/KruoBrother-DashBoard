@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
 import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
+
+import { GlobalContext } from "../provider/globalprovider";
 
 const breatheAnimation = keyframes`
 0%{
@@ -22,6 +24,7 @@ const breatheAnimation = keyframes`
 
 const Container = styled.div`
   position: relative;
+  display: ${(props) => (props.show ? "block" : "none")};
   .income {
     position: absolute;
     top: 50%;
@@ -62,12 +65,7 @@ const Container = styled.div`
 const Celebrate = ({ className }) => {
   let number = 100000000;
   const displayNum = number.toLocaleString(undefined);
-  const [open, setOpen] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setOpen(false);
-    }, 12000);
-  }, []);
+  const { show } = useContext(GlobalContext);
   useEffect(() => {
     const incomeText = document.getElementsByClassName("income");
     for (let i = 0; i < incomeText.length; i++) {
@@ -76,12 +74,10 @@ const Celebrate = ({ className }) => {
     }
   }, []);
 
-  if (!open) {
-    return null;
-  }
+  if (!show) return null;
   return (
     <div className={className}>
-      <Container>
+      <Container show={show}>
         <span className="income">${displayNum}</span>
         <span className="income">${displayNum}</span>
         <span className="income">${displayNum}</span>
