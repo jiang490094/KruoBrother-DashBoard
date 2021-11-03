@@ -11,6 +11,8 @@ const Background = dynamic(() => import("../view/background"));
 const Celebrate = dynamic(() => import("../view/celebrate"));
 const SiteNumber = dynamic(() => import("../view/SiteNumber"));
 const Ranking = dynamic(() => import("../view/ranking"));
+const Title = dynamic(() => import("../view/Title"));
+
 function HomePage({ moduleData }) {
   const data = {
     total_rev: 3376762.4661478,
@@ -41,6 +43,7 @@ function HomePage({ moduleData }) {
           <SiteNumber />
         </div>
         <Ranking />
+        <Title />
         <Map />
         <Background />
         <Celebrate />

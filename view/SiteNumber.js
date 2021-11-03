@@ -12,7 +12,8 @@ const SiteNumber = ({ className }) => {
             <p>分站</p>生活市集
           </div>
           <span className="total-number">
-            $<CountUp start={0} end={2000} duration={9} />
+            $
+            <CountUp start={0} end={2000} duration={9} separator="," />
           </span>
         </div>
         <img className="under-line" src="/Images/pie-under-line.png" />
@@ -22,7 +23,7 @@ const SiteNumber = ({ className }) => {
           </div>
           <span className="total-number">
             $
-            <CountUp start={0} end={1234} duration={9} />
+            <CountUp start={0} end={1234} duration={9} separator="," />
           </span>
         </div>
       </div>
@@ -38,13 +39,13 @@ SiteNumber.propTypes = {
 export default styled(SiteNumber)`
   width: 500px;
   position: fixed;
-  right: 0;
-  bottom: 0;
+  right: 26px;
+  bottom: 128px;
   img {
     display: block;
   }
   .site-number {
-    background-color: black;
+    background-color: #44474c6b;
     .under-line {
       width: 500px;
     }

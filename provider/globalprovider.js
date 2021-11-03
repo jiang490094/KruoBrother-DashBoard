@@ -13,6 +13,9 @@ const Globalprovider = ({ children, moduleData }) => {
   const [cityData, setCityData] = useState(moduleData?.city);
   const [total, setTotal] = useState(moduleData?.total);
   const [show, setShow] = useState(false);
+  const [category, setCategory] = useState({});
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const timerID = setInterval(() => {
       setHearBeat((prev) => prev + 1);
@@ -62,9 +65,33 @@ const Globalprovider = ({ children, moduleData }) => {
     fetchAll(heartBeat);
   }, [heartBeat]);
 
+  useEffect(() => {
+    const nextObj = RankData.shift();
+    let categoryList = { ...category };
+
+    if (nextObj?.category_name in categoryList) {
+      categoryList[nextObj?.category_name].amount += parseInt(nextObj?.amount);
+    } else {
+      categoryList[nextObj?.category_name] = {};
+      categoryList[nextObj?.category_name].amount = parseInt(nextObj?.amount);
+      categoryList[nextObj?.category_name].category_name =
+        nextObj?.category_name;
+    }
+
+    setCategory(categoryList);
+
+    const newArray = Object.values(categoryList);
+
+    newArray.sort(function (a, b) {
+      return b.amount - a.amount;
+    });
+    setCategories(finalArray);
+    const finalArray = newArray.slice(0, 10);
+  }, [heartBeat]);
+
   return (
     <GlobalContext.Provider
-      value={{ heartBeat, rankDisplay, cityData, total, show }}
+      value={{ heartBeat, rankDisplay, cityData, total, show, categories }}
     >
       {children}
     </GlobalContext.Provider>
