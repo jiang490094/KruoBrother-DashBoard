@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
+import CountUp from "react-countup";
 
 const Info = styled.div`
   position: absolute;
@@ -62,9 +63,7 @@ const Info = styled.div`
 `;
 const InfoCard = ({ country, poxitionX, poxitionY }) => {
   const infoRef = useRef(null);
-  let number = 9998898;
-  const displayNum = number.toLocaleString(undefined);
-
+  const [number, setNumber] = useState(1000);
   let x = poxitionX;
   let y = poxitionY;
   let cx = 50;
@@ -209,6 +208,8 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
     }, 5000);
   };
   useEffect(() => {
+    setNumber(999999);
+
     if (infoRef.current) {
       if (country === "#Miaoli") {
         PositionChange();
@@ -221,6 +222,9 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       }
     }
   }, [poxitionX]);
+  useEffect(() => {
+    setNumber(10000);
+  }, [country]);
 
   return (
     <Info
@@ -239,11 +243,16 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
         <img src="Images/buy123/info-bar.svg" className="info" />
         <div className="info-detail">
           <img src="Images/pcone-icon.svg" />
-          <div>$ {displayNum}</div>
+
+          <div>
+            $ <CountUp start={0} end={number} duration={2} separator="," />
+          </div>
         </div>
         <div className="info-detail">
           <img src="Images/buy123-icon.svg" />
-          <div>$ {displayNum}</div>
+          <div>
+            $ <CountUp start={0} end={number} duration={2} separator="," />
+          </div>
         </div>
         <div className="country">{countryName}銷售額</div>
         <div className="perstange">
