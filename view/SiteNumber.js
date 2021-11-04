@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import CountUp from "react-countup";
 import { useContext } from "react";
 
 import { GlobalContext } from "../provider/globalprovider";
+
+import SiteCoutUp from "./SiteCoutUp";
 
 const SiteNumber = ({ className }) => {
   const { total } = useContext(GlobalContext);
@@ -16,30 +17,14 @@ const SiteNumber = ({ className }) => {
           <div className="site-line">
             <p>分站</p>生活市集
           </div>
-          <span className="total-number">
-            $
-            <CountUp
-              start={0}
-              end={total?.buy123?.amount}
-              duration={300}
-              separator=","
-            />
-          </span>
+          <SiteCoutUp price={total?.buy123?.amount} site="buy123" />
         </div>
         <img className="under-line" src="/Images/pie-under-line.png" />
         <div className="buy123 pcone">
           <div className="site-line">
             <p>分站</p>松果購物
           </div>
-          <span className="total-number">
-            $
-            <CountUp
-              start={0}
-              end={total?.pcone?.amount}
-              duration={300}
-              separator=","
-            />
-          </span>
+          <SiteCoutUp price={total?.pcone?.amount} site="pcone" />
         </div>
       </div>
       <img src="Images/dot-line.png" />

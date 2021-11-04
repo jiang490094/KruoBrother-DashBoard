@@ -15,6 +15,8 @@ let category = {};
 let categories = [];
 let openRecords = [];
 let displayIncome = 0;
+let buy123Sum = 0;
+let pconeSum = 0;
 saveItem([], "opened");
 // const priceArray = [8000000, 4000000];
 const Globalprovider = ({ children, moduleData }) => {
@@ -33,8 +35,15 @@ const Globalprovider = ({ children, moduleData }) => {
   }, []);
   useEffect(() => {
     const number = document.getElementById("countUpRef");
+    const buy123Number = document.getElementById("buy123CountUP");
+    const pconeNumber = document.getElementById("pconeCountUp");
+
     let currentIncome = number.textContent;
+    let currentBuyIncome = buy123Number.textContent;
+    let currentPconeIncome = pconeNumber.textContent;
     currentIncome = parseInt(currentIncome.replaceAll(",", ""));
+    buy123Sum = parseInt(currentBuyIncome.replaceAll(",", ""));
+    pconeSum = parseInt(currentPconeIncome.replaceAll(",", ""));
     // priceArray.forEach((item, index) => {
     //   if (currentIncome / item > 1) {
     //     const records = loadItem("opened");
@@ -157,7 +166,9 @@ const Globalprovider = ({ children, moduleData }) => {
         show,
         categories,
         totalPrice,
-        displayIncome
+        displayIncome,
+        buy123Sum,
+        pconeSum
       }}
     >
       {children}
