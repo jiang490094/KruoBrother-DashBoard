@@ -52,7 +52,7 @@ const Container = styled.div`
 const Celebrate = ({ className }) => {
   const { show, displayIncome } = useContext(GlobalContext);
   const displayNum = displayIncome.toLocaleString(undefined);
-  console.log("show", displayIncome);
+  console.log("show", show);
   if (!show) return null;
   return (
     <div className={className}>

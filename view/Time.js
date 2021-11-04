@@ -51,6 +51,7 @@ export default styled(Time)`
   position: relative;
   right: -25px;
   margin-bottom: 24px;
+  margin-top: 30px;
   .now {
     font-size: 32px;
     margin-right: 15px;

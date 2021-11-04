@@ -41,12 +41,11 @@ export default styled(SiteNumber)`
   width: 500px;
   position: fixed;
   right: 26px;
-  bottom: 128px;
+  bottom: 30px;
   img {
     display: block;
   }
   .site-number {
-    background-color: #44474c6b;
     .under-line {
       width: 500px;
     }
@@ -56,6 +55,8 @@ export default styled(SiteNumber)`
       font-size: 30px;
       padding-left: 12px;
       padding-top: 15px;
+      background-color: #44474c6b;
+
       p {
         font-size: 12px;
         color: rgba(255, 255, 255, 0.6);
