@@ -48,7 +48,7 @@ export default styled(Title)`
     font-family: Prohibition;
     font-size: 100px;
     color: rgba(255, 255, 255, 1);
-    text-shadow: 0 0 10px #00ffef, 0 0 30px #fc00ff, 0 0 10px #00ffef;
+    text-shadow: 0 0 10px #ff5500, 0 0 15px #00ffef, 0 0 20px #ff5500;
   }
 
   img {
