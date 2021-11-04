@@ -11,8 +11,8 @@ let cityData = {};
 let total = {};
 let totalPrice = 0;
 let show = false;
-let category = {};
-let categories = [];
+let buy123Category = {};
+let buy123Categories = [];
 let openRecords = [];
 let displayIncome = 0;
 let buy123Sum = 0;
@@ -20,6 +20,9 @@ let pconeSum = 0;
 let IsFetchRank = false;
 saveItem([], "opened");
 const base = 10000000;
+let pconeCategory = {};
+let pconeCategories = [];
+
 const Globalprovider = ({ children }) => {
   const [heartBeat, setHearBeat] = useState(0);
 
@@ -54,7 +57,7 @@ const Globalprovider = ({ children }) => {
           openRecords.push(i);
           saveItem(openRecords, "opened");
           displayIncome = goal;
-          console.log("aloha");
+          // console.log("aloha");
           show = true;
           setTimeout(() => {
             show = false;
@@ -118,25 +121,64 @@ const Globalprovider = ({ children }) => {
 
   useEffect(() => {
     const nextObj = RankData.shift();
-    let categoryList = { ...category };
+    // console.log("nextObj", nextObj);
+    if (!nextObj) return;
+    let buy123List = { ...buy123Category };
+    let pconeList = { ...pconeCategory };
+    // console.log("asdsadsadsada", buy123List, pconeList);
 
-    if (nextObj?.category_name in categoryList) {
-      categoryList[nextObj?.category_name].amount += parseInt(nextObj?.amount);
-    } else {
-      categoryList[nextObj?.category_name] = {};
-      categoryList[nextObj?.category_name].amount = parseInt(nextObj?.amount);
-      categoryList[nextObj?.category_name].category_name =
-        nextObj?.category_name;
+    // let buy123Amount = [];
+    // console.log("aa", buy123Amount);
+    // Object.assign(nextObj, { percent: "" });
+    nextObj["percent"] = 0;
+    // console.log(nextObj);
+    if (nextObj?.site === "buy123") {
+      // console.log()
+      if (!(nextObj?.category_name in buy123List)) {
+        buy123List[nextObj?.category_name] = {}; //接上api後換成分類id
+        buy123List[nextObj?.category_name].category_name =
+          nextObj.category_name;
+        buy123List[nextObj?.category_name].site = nextObj.site;
+        buy123List[nextObj?.category_name].amount = 0;
+      }
+      buy123List[nextObj?.category_name].amount += parseInt(nextObj?.amount);
+      buy123List[nextObj?.category_name].percent =
+        (buy123List[nextObj?.category_name].amount / buy123Sum) * 10000;
     }
-    category = categoryList;
+    buy123Category = buy123List;
 
-    const newArray = Object.values(categoryList);
+    if (nextObj?.site === "pcone") {
+      if (!(nextObj?.category_name in pconeList)) {
+        pconeList[nextObj?.category_name] = {};
+        pconeList[nextObj?.category_name].category_name =
+          nextObj?.category_name;
+        pconeList[nextObj?.category_name].site = nextObj.site;
+        pconeList[nextObj?.category_name].amount = 0;
+        pconeList[nextObj?.category_name].percent = 0;
+      }
+      pconeList[nextObj?.category_name].amount += parseInt(nextObj?.amount);
+      pconeList[nextObj?.category_name].percent =
+        (pconeList[nextObj?.category_name].amount / pconeSum) * 100;
+    }
+    pconeCategory = pconeList;
 
-    newArray.sort(function (a, b) {
+    const newBuy123 = Object.values(buy123List);
+    const newPcone = Object.values(pconeList);
+
+    newBuy123.sort(function (a, b) {
       return b.amount - a.amount;
     });
-    categories = finalArray;
-    const finalArray = newArray.slice(0, 10);
+    newPcone.sort(function (a, b) {
+      return b.amount - a.amount;
+    });
+    const finalBuy123 = newBuy123.slice(0, 10);
+    const finalPcone = newPcone.slice(0, 10);
+
+    buy123Categories = finalBuy123;
+    pconeCategories = finalPcone;
+
+    // console.log("buy123Categories", buy123Categories);
+    // console.log("pconeCategories", pconeCategories);
   }, [heartBeat]);
 
   return (
@@ -147,18 +189,18 @@ const Globalprovider = ({ children }) => {
         cityData,
         total,
         show,
-        categories,
+        buy123Categories,
         totalPrice,
         displayIncome,
         buy123Sum,
-        pconeSum
+        pconeSum,
+        pconeCategories
       }}
     >
       {children}
     </GlobalContext.Provider>
   );
 };
-
 export default Globalprovider;
 Globalprovider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired

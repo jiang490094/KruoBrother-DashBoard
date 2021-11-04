@@ -19,11 +19,15 @@ const PieChart = ({ className, siteName, siteColor, number }) => {
   );
 };
 
+PieChart.defaultProps = {
+  number: 0
+};
+
 PieChart.propTypes = {
   className: PropTypes.string.isRequired,
   siteName: PropTypes.string.isRequired,
   siteColor: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired
+  number: PropTypes.number
 };
 
 export default styled(PieChart)`
