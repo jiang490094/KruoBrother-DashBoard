@@ -226,7 +226,6 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
     };
     const buyAmount = cityAmount?.buy123?.amount || 0;
     const pconeAmout = cityAmount?.pcone?.amount || 0;
-    console.log(cityAmount?.percentage);
     InfoData.percentage = cityAmount?.percentage || 0;
     InfoData.buyAmount = buyAmount;
     InfoData.pconeAmout = pconeAmout;
