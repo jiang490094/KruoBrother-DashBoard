@@ -100,6 +100,10 @@ const Globalprovider = ({ children }) => {
 
   useEffect(() => {
     const nextObj = RankData.shift();
+    console.log(nextObj);
+    let forCategory;
+    if (!nextObj) forCategory = JSON.parse(JSON.stringify(nextObj));
+
     let newObject = { ...rank };
     if (nextObj?.item_id in newObject) {
       newObject[nextObj?.item_id].amount += parseInt(nextObj?.amount);
@@ -118,12 +122,11 @@ const Globalprovider = ({ children }) => {
     const finalArray = newArray.slice(0, 10);
     rankDisplay = finalArray;
     fetchAll(heartBeat);
-  }, [heartBeat]);
 
-  useEffect(() => {
-    const nextObj = RankData.shift();
-    // console.log("nextObj", nextObj);
-    if (!nextObj) return;
+    //--------------------category-------------------
+    // const forCategory = { ...nextObj };
+    if (!forCategory) return;
+    console.log(forCategory);
     let buy123List = { ...buy123Category };
     let pconeList = { ...pconeCategory };
     // console.log("asdsadsadsada", buy123List, pconeList);
@@ -131,35 +134,39 @@ const Globalprovider = ({ children }) => {
     // let buy123Amount = [];
     // console.log("aa", buy123Amount);
     // Object.assign(nextObj, { percent: "" });
-    nextObj["percent"] = 0;
+    forCategory["percent"] = 0;
     // console.log(nextObj);
-    if (nextObj?.site === "buy123") {
+    if (forCategory?.site === "buy123") {
       // console.log()
-      if (!(nextObj?.category_name in buy123List)) {
-        buy123List[nextObj?.category_name] = {}; //接上api後換成分類id
-        buy123List[nextObj?.category_name].category_name =
-          nextObj.category_name;
-        buy123List[nextObj?.category_name].site = nextObj.site;
-        buy123List[nextObj?.category_name].amount = 0;
+      if (!(forCategory?.category_name in buy123List)) {
+        buy123List[forCategory?.category_name] = {}; //接上api後換成分類id
+        buy123List[forCategory?.category_name].category_name =
+          forCategory.category_name;
+        buy123List[forCategory?.category_name].site = forCategory.site;
+        buy123List[forCategory?.category_name].amount = 0;
       }
-      buy123List[nextObj?.category_name].amount += parseInt(nextObj?.amount);
-      buy123List[nextObj?.category_name].percent =
-        (buy123List[nextObj?.category_name].amount / buy123Sum) * 10000;
+      buy123List[forCategory?.category_name].amount += parseInt(
+        forCategory?.amount
+      );
+      buy123List[forCategory?.category_name].percent =
+        (buy123List[forCategory?.category_name].amount / buy123Sum) * 10000;
     }
     buy123Category = buy123List;
 
-    if (nextObj?.site === "pcone") {
-      if (!(nextObj?.category_name in pconeList)) {
-        pconeList[nextObj?.category_name] = {};
-        pconeList[nextObj?.category_name].category_name =
-          nextObj?.category_name;
-        pconeList[nextObj?.category_name].site = nextObj.site;
-        pconeList[nextObj?.category_name].amount = 0;
-        pconeList[nextObj?.category_name].percent = 0;
+    if (forCategory?.site === "pcone") {
+      if (!(forCategory?.category_name in pconeList)) {
+        pconeList[forCategory?.category_name] = {};
+        pconeList[forCategory?.category_name].category_name =
+          forCategory?.category_name;
+        pconeList[forCategory?.category_name].site = forCategory.site;
+        pconeList[forCategory?.category_name].amount = 0;
+        pconeList[forCategory?.category_name].percent = 0;
       }
-      pconeList[nextObj?.category_name].amount += parseInt(nextObj?.amount);
-      pconeList[nextObj?.category_name].percent =
-        (pconeList[nextObj?.category_name].amount / pconeSum) * 100;
+      pconeList[forCategory?.category_name].amount += parseInt(
+        forCategory?.amount
+      );
+      pconeList[forCategory?.category_name].percent =
+        (pconeList[forCategory?.category_name].amount / pconeSum) * 100;
     }
     pconeCategory = pconeList;
 
@@ -177,10 +184,70 @@ const Globalprovider = ({ children }) => {
 
     buy123Categories = finalBuy123;
     pconeCategories = finalPcone;
-
-    // console.log("buy123Categories", buy123Categories);
-    // console.log("pconeCategories", pconeCategories);
+    console.log("buy123Categories", buy123Categories);
   }, [heartBeat]);
+
+  // useEffect(() => {
+  //   const nextObj = RankData.shift();
+  //   // console.log("nextObj", nextObj);
+  //   if (!nextObj) return;
+  //   let buy123List = { ...buy123Category };
+  //   let pconeList = { ...pconeCategory };
+  //   // console.log("asdsadsadsada", buy123List, pconeList);
+
+  //   // let buy123Amount = [];
+  //   // console.log("aa", buy123Amount);
+  //   // Object.assign(nextObj, { percent: "" });
+  //   nextObj["percent"] = 0;
+  //   // console.log(nextObj);
+  //   if (nextObj?.site === "buy123") {
+  //     // console.log()
+  //     if (!(nextObj?.category_name in buy123List)) {
+  //       buy123List[nextObj?.category_name] = {}; //接上api後換成分類id
+  //       buy123List[nextObj?.category_name].category_name =
+  //         nextObj.category_name;
+  //       buy123List[nextObj?.category_name].site = nextObj.site;
+  //       buy123List[nextObj?.category_name].amount = 0;
+  //     }
+  //     buy123List[nextObj?.category_name].amount += parseInt(nextObj?.amount);
+  //     buy123List[nextObj?.category_name].percent =
+  //       (buy123List[nextObj?.category_name].amount / buy123Sum) * 10000;
+  //   }
+  //   buy123Category = buy123List;
+
+  //   if (nextObj?.site === "pcone") {
+  //     if (!(nextObj?.category_name in pconeList)) {
+  //       pconeList[nextObj?.category_name] = {};
+  //       pconeList[nextObj?.category_name].category_name =
+  //         nextObj?.category_name;
+  //       pconeList[nextObj?.category_name].site = nextObj.site;
+  //       pconeList[nextObj?.category_name].amount = 0;
+  //       pconeList[nextObj?.category_name].percent = 0;
+  //     }
+  //     pconeList[nextObj?.category_name].amount += parseInt(nextObj?.amount);
+  //     pconeList[nextObj?.category_name].percent =
+  //       (pconeList[nextObj?.category_name].amount / pconeSum) * 100;
+  //   }
+  //   pconeCategory = pconeList;
+
+  //   const newBuy123 = Object.values(buy123List);
+  //   const newPcone = Object.values(pconeList);
+
+  //   newBuy123.sort(function (a, b) {
+  //     return b.amount - a.amount;
+  //   });
+  //   newPcone.sort(function (a, b) {
+  //     return b.amount - a.amount;
+  //   });
+  //   const finalBuy123 = newBuy123.slice(0, 10);
+  //   const finalPcone = newPcone.slice(0, 10);
+
+  //   buy123Categories = finalBuy123;
+  //   pconeCategories = finalPcone;
+
+  //   // console.log("buy123Categories", buy123Categories);
+  //   // console.log("pconeCategories", pconeCategories);
+  // }, [heartBeat]);
 
   return (
     <GlobalContext.Provider

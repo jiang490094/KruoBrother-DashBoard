@@ -44,7 +44,9 @@ const Ranking = ({ className }) => {
       <div className="content">
         {rankDisplay.length > 0 &&
           rankDisplay.map((item, key) => {
-            console.log(item);
+            {
+              /* console.log(item); */
+            }
             if (!item?.item_name) return <></>;
             const progress =
               key === 0
