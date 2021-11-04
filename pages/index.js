@@ -1,7 +1,5 @@
-import PropTypes from "prop-types";
 import dynamic from "next/dynamic";
 
-import fetchData from "../util";
 import Globalprovider from "../provider/globalprovider";
 
 const Map = dynamic(() => import("../view/map"));
@@ -13,10 +11,10 @@ const SiteNumber = dynamic(() => import("../view/SiteNumber"));
 const Ranking = dynamic(() => import("../view/ranking"));
 const Title = dynamic(() => import("../view/Title"));
 
-function HomePage({ moduleData }) {
+function HomePage() {
   return (
     <div>
-      <Globalprovider moduleData={moduleData}>
+      <Globalprovider>
         <div className="dead-line">
           <Time />
           <PieChart siteName="生活市集" siteColor="rgba(255, 107, 0, 1)" />
@@ -34,19 +32,3 @@ function HomePage({ moduleData }) {
 }
 
 export default HomePage;
-
-export async function getServerSideProps() {
-  let moduleData;
-  try {
-    const rowData = await fetchData();
-    moduleData = rowData?.data;
-  } catch (err) {
-    console.log("error".err);
-  }
-  return {
-    props: { moduleData }
-  };
-}
-HomePage.propTypes = {
-  moduleData: PropTypes.object.isRequired
-};

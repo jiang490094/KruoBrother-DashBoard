@@ -1,8 +1,6 @@
 //fetchall
-const fetchData = () => {
-  return fetch(
-    "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_revenue_by_day "
-  )
+const fetchData = (url) => {
+  return fetch(url)
     .then((response) => response.json())
     .then((data) => {
       return data;

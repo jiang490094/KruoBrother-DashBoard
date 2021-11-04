@@ -2,9 +2,9 @@ import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import fetchData, { saveItem, loadItem } from "../util";
-import { RankData } from "../textCase/testCase";
 
 export const GlobalContext = createContext({});
+let RankData = [];
 let rank = {};
 let rankDisplay = [];
 let cityData = {};
@@ -17,13 +17,11 @@ let openRecords = [];
 let displayIncome = 0;
 let buy123Sum = 0;
 let pconeSum = 0;
+let IsFetchRank = false;
 saveItem([], "opened");
-// const priceArray = [8000000, 4000000];
-const Globalprovider = ({ children, moduleData }) => {
+const base = 10000000;
+const Globalprovider = ({ children }) => {
   const [heartBeat, setHearBeat] = useState(0);
-  cityData = moduleData?.city;
-  total = moduleData?.total;
-  totalPrice = total?.buy123?.amount + total?.pcone?.amount;
 
   useEffect(() => {
     const timerID = setInterval(() => {
@@ -38,80 +36,65 @@ const Globalprovider = ({ children, moduleData }) => {
     const buy123Number = document.getElementById("buy123CountUP");
     const pconeNumber = document.getElementById("pconeCountUp");
 
-    let currentIncome = number.textContent;
-    let currentBuyIncome = buy123Number.textContent;
-    let currentPconeIncome = pconeNumber.textContent;
+    let currentIncome = number.innerText;
+    let currentBuyIncome = buy123Number.innerText;
+    let currentPconeIncome = pconeNumber.innerText;
+
     currentIncome = parseInt(currentIncome.replaceAll(",", ""));
     buy123Sum = parseInt(currentBuyIncome.replaceAll(",", ""));
     pconeSum = parseInt(currentPconeIncome.replaceAll(",", ""));
-    // priceArray.forEach((item, index) => {
-    //   if (currentIncome / item > 1) {
-    //     const records = loadItem("opened");
-    //     const IsAlreadyOpen = records.includes(index);
-    //     displayIncome = item;
-    //     if (IsAlreadyOpen) {
-    //       return;
-    //     } else {
-    //       openRecords.push(index);
-    //       saveItem(openRecords, "opened");
-    //       console.log("aloha");
-    //       show = true;
-    //       setTimeout(() => {
-    //         show = false;
-    //       }, 12000);
-    //       return;
-    //     }
-    //   } else {
-    //     return;
-    //   }
-    // });
-    if (currentIncome / 8000000 > 1) {
-      const records = loadItem("opened");
-      const IsAlreadyOpen = records.includes(2);
-      displayIncome = 8000000;
-      if (IsAlreadyOpen) {
-        return;
-      } else {
-        openRecords.push(2);
-        saveItem(openRecords, "opened");
-        console.log("ohiyo");
-        show = true;
-        setTimeout(() => {
-          show = false;
-        }, 12000);
-        return;
-      }
-    }
-    if (currentIncome / 4000000 > 1) {
-      const records = loadItem("opened");
-      const IsAlreadyOpen = records.includes(1);
-      displayIncome = 4000000;
-      if (IsAlreadyOpen) {
-        return;
-      } else {
-        openRecords.push(1);
-        saveItem(openRecords, "opened");
-        console.log("ohiyo");
-        show = true;
-        setTimeout(() => {
-          show = false;
-        }, 12000);
-        return;
+    for (let i = 10; i > 0; i--) {
+      const goal = i * base;
+      if (currentIncome / goal > 1) {
+        const records = loadItem("opened");
+        const IsAlreadyOpen = records.includes(i);
+        if (IsAlreadyOpen) {
+          return;
+        } else {
+          openRecords.push(i);
+          saveItem(openRecords, "opened");
+          displayIncome = goal;
+          console.log("aloha");
+          show = true;
+          setTimeout(() => {
+            show = false;
+          }, 12000);
+          return;
+        }
       }
     }
   }, [heartBeat]);
 
   const fetchAll = async (timer) => {
     if (timer % 30 === 0) {
-      const alldata = await fetchData();
+      const alldata = await fetchData(
+        "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_revenue_by_day "
+      );
+
       cityData = alldata?.data?.city;
       total = alldata?.data?.total;
-      const NewtotalPrice = total?.buy123?.amount + total?.pcone?.amount;
-      totalPrice = NewtotalPrice;
+      totalPrice = alldata?.data?.total?.revenue;
     } else {
       return;
     }
   };
+  const fetchRank = async () => {
+    if (RankData.length === 0 && !IsFetchRank) {
+      IsFetchRank = true;
+      const prodRow = await fetchData(
+        "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_buyer_info"
+      );
+      const newData = prodRow?.data;
+      RankData = RankData.concat(newData);
+      IsFetchRank = false;
+    }
+  };
+  useEffect(() => {
+    if (RankData.length === 0) {
+      fetchRank();
+    }
+  }, [heartBeat]);
+
   useEffect(() => {
     const nextObj = RankData.shift();
     let newObject = { ...rank };
@@ -178,6 +161,5 @@ const Globalprovider = ({ children, moduleData }) => {
 
 export default Globalprovider;
 Globalprovider.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-  moduleData: PropTypes.object.isRequired
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired
 };

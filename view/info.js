@@ -25,7 +25,7 @@ const Info = styled.div`
     border-radius: 20px;
     box-shadow: inset 0px 0px 15px orange;
     border: 1px solid white;
-    .perstange,
+    .percentage,
     .country {
       font-size: 30px;
       font-weight: 600;
@@ -38,11 +38,12 @@ const Info = styled.div`
       left: 50%;
       transform: translateX(-30%);
     }
-    .perstange {
+    .percentage {
       text-align: center;
       position: absolute;
       top: 40px;
       left: 32px;
+      font-family: Prohibition;
       .title {
         font-size: 14px;
         margin-bottom: 5px;
@@ -66,11 +67,11 @@ const Info = styled.div`
 const InfoCard = ({ country, poxitionX, poxitionY }) => {
   const infoRef = useRef(null);
   const [InfoNumber, setInfoNumber] = useState({
-    perstange: 0,
+    percentage: 0,
     buyAmount: 0,
     pconeAmout: 0
   });
-  const { cityData, total } = useContext(GlobalContext);
+  const { cityData } = useContext(GlobalContext);
   let x = poxitionX;
   let y = poxitionY;
   let cx = 50;
@@ -216,22 +217,17 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
     }, 5000);
   };
   useEffect(() => {
+    if (!cityData) return;
     const cityAmount = cityData[countryName];
-    console.log(cityData);
-
     let InfoData = {
-      perstange: 0,
+      percentage: 0,
       buyAmount: 0,
       pconeAmout: 0
     };
-    const buyAmount = cityAmount.buy123?.amount || 0;
-    const pconeAmout = cityAmount.pcone?.amount || 0;
-    const buyTotal = total?.buy123?.amount || 0;
-    const pconeTotal = total?.pcone?.amount || 0;
-    const perstange = Math.round(
-      ((buyAmount + pconeAmout) / (buyTotal + pconeTotal).toFixed(2)) * 100
-    );
-    InfoData.perstange = perstange;
+    const buyAmount = cityAmount?.buy123?.amount || 0;
+    const pconeAmout = cityAmount?.pcone?.amount || 0;
+    console.log(cityAmount?.percentage);
+    InfoData.percentage = cityAmount?.percentage || 0;
     InfoData.buyAmount = buyAmount;
     InfoData.pconeAmout = pconeAmout;
     setInfoNumber(InfoData);
@@ -247,7 +243,9 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
       }
     }
   }, [poxitionX]);
-
+  if (!cityData) {
+    return null;
+  }
   return (
     <Info
       poxitionX={x}
@@ -289,9 +287,9 @@ const InfoCard = ({ country, poxitionX, poxitionY }) => {
           </div>
         </div>
         <div className="country">{countryName}銷售額</div>
-        <div className="perstange">
+        <div className="percentage">
           <div className="title">全台占比</div>
-          {InfoNumber?.perstange}%
+          {InfoNumber?.percentage}%
         </div>
       </div>
     </Info>

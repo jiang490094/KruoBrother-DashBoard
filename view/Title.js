@@ -1,20 +1,22 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useCountUp } from "react-countup";
+import CountUp from "react-countup";
 import { useContext } from "react";
 
 import { GlobalContext } from "../provider/globalprovider";
 
 const Title = ({ className }) => {
   const { totalPrice } = useContext(GlobalContext);
+  console.log(totalPrice, 111111111);
 
-  useCountUp({
-    ref: "countUpRef",
-    start: 0,
-    end: totalPrice,
-    duration: 300,
-    separator: ","
-  });
+  // useCountUp({
+  //   ref: "countUpRef",
+  //   start: 0,
+  //   end: totalPrice,
+  //   delay: 2,
+  //   duration: 300,
+  //   separator: ","
+  // });
   return (
     <div className={className}>
       <div>
@@ -22,8 +24,8 @@ const Title = ({ className }) => {
         <p className="title-words">總交易額</p>
         <img src="Images/title-total-line.png" />
       </div>
-      <div className="title-number">
-        $ <span id="countUpRef" className="income-all-number" />
+      <div className="title-number" id="countUpRef">
+        $ <CountUp start={0} duration={300} separator="," end={totalPrice} />
       </div>
     </div>
   );

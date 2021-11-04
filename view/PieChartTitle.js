@@ -6,12 +6,11 @@ import { useContext } from "react";
 import { GlobalContext } from "../provider/globalprovider";
 
 const PieChartTitle = ({ className, siteName, siteColor }) => {
-  const { totalPrice, total } = useContext(GlobalContext);
-  let price = total?.buy123?.amount;
+  const { total } = useContext(GlobalContext);
+  let price = total?.buy123?.percentage;
   if (siteName === "松果購物") {
-    price = total?.pcone?.amount;
+    price = total?.pcone?.percentage;
   }
-  const value = Math.round((price / totalPrice) * 100);
 
   return (
     <>
@@ -34,7 +33,7 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
             className="title-words number-font"
             style={{ color: `${siteColor}` }}
           >
-            <CountUp start={0} end={value} duration={30} />%
+            <CountUp start={0} end={price} duration={180} />%
           </p>
         </div>
 
