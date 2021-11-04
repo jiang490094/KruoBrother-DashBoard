@@ -43,11 +43,16 @@ const Globalprovider = ({ children }) => {
     let currentBuyIncome = buy123Number.innerText;
     let currentPconeIncome = pconeNumber.innerText;
 
-    currentIncome = parseInt(currentIncome.replaceAll(",", ""));
-    buy123Sum = parseInt(currentBuyIncome.replaceAll(",", ""));
-    pconeSum = parseInt(currentPconeIncome.replaceAll(",", ""));
+    currentIncome = parseInt(
+      currentIncome.replace("$", "").replaceAll(",", "")
+    );
+    buy123Sum = parseInt(currentBuyIncome.replace("$", "").replaceAll(",", ""));
+    pconeSum = parseInt(
+      currentPconeIncome.replace("$", "").replaceAll(",", "")
+    );
     for (let i = 10; i > 0; i--) {
       const goal = i * base;
+
       if (currentIncome / goal > 1) {
         const records = loadItem("opened");
         const IsAlreadyOpen = records.includes(i);
