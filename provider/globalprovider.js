@@ -107,6 +107,7 @@ const Globalprovider = ({ children }) => {
       newObject[nextObj?.item_id] = {};
       newObject[nextObj?.item_id].amount = parseInt(nextObj?.amount);
       newObject[nextObj?.item_id].item_name = nextObj?.item_name;
+      newObject[nextObj?.item_id].site = nextObj?.site;
     }
     rank = newObject;
     const newArray = Object.values(newObject);

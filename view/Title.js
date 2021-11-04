@@ -7,16 +7,6 @@ import { GlobalContext } from "../provider/globalprovider";
 
 const Title = ({ className }) => {
   const { totalPrice } = useContext(GlobalContext);
-  // console.log(totalPrice, 111111111);
-
-  // useCountUp({
-  //   ref: "countUpRef",
-  //   start: 0,
-  //   end: totalPrice,
-  //   delay: 2,
-  //   duration: 300,
-  //   separator: ","
-  // });
   return (
     <div className={className}>
       <div>
@@ -58,8 +48,7 @@ export default styled(Title)`
     font-family: Prohibition;
     font-size: 100px;
     color: rgba(255, 255, 255, 1);
-    text-shadow: 0 0 10px rgb(255 153 0), 0 0 10px rgb(255 153 0),
-      0 0 10px rgb(255 153 0);
+    text-shadow: 0 0 10px #ff5500, 0 0 15px #00ffef, 0 0 20px #ff5500;
   }
 
   img {
