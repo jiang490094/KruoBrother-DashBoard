@@ -7,7 +7,7 @@ import { GlobalContext } from "../provider/globalprovider";
 
 const Title = ({ className }) => {
   const { totalPrice } = useContext(GlobalContext);
-  console.log(totalPrice, 111111111);
+  // console.log(totalPrice, 111111111);
 
   // useCountUp({
   //   ref: "countUpRef",
