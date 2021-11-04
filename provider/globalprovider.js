@@ -19,7 +19,7 @@ let buy123Sum = 0;
 let pconeSum = 0;
 let IsFetchRank = false;
 saveItem([], "opened");
-const base = 10000000;
+const base = 1000000;
 let pconeCategory = {};
 let pconeCategories = [];
 
