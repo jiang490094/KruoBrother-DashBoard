@@ -1,8 +1,13 @@
 import { useContext } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 import { GlobalContext } from "../provider/globalprovider";
 
+const breatheAnimation = keyframes`
+ 0% { transform:translateY(-70px) }
+ 50% { transform:translateY(-50px) }
+ 100% {transform:translateY(-70px)}
+`;
 const Container = styled.div`
   position: fixed;
   width: 850px;
@@ -27,9 +32,42 @@ const Wrapper = styled.div`
     width: 15px;
     height: 15px;
     border-radius: 20px;
-    background: ${(props) => (props.active ? "#80ffee50" : "transparent")};
+    background: ${(props) => (props.active ? "#80ffee90" : "transparent")};
     border: 4px solid ${(props) => (props.active ? "#80ffee" : "#807f7f")};
     backdrop-filter: saturate(180%) blur(10px);
+    box-shadow: 0 0 15px ${(props) => (props.active ? "white" : "transparent")};
+    position: relative;
+    .open {
+      position: absolute;
+      left: -10px;
+      transform-origin: center;
+      transform: translateY(-70px) scale(1);
+      width: 30px;
+      height: 30px;
+      /* border: 3px dotted orange; */
+      font-size: 20px;
+      border-radius: 50%;
+      font-family: Prohibition;
+      transition: all 1s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+      animation-name: ${breatheAnimation};
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      box-shadow: 0 0 5px 5px #fff, /* inner white */ 0 0 5px 6px gold,
+        /* middle magenta */ 0 0 5px 5px #0ff; /* outer cyan */
+      background-color: ${(props) =>
+        props.active ? "#80ffee50" : "transparent"};
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    .close {
+      transform: scale(0);
+    }
   }
 
   .line {
@@ -60,16 +98,16 @@ const MileStone = () => {
 
   const milestones = [
     0,
-    10000000,
-    20000000,
-    30000000,
-    40000000,
-    50000000,
-    60000000,
-    70000000,
-    80000000,
-    90000000,
-    100000000
+    1000000,
+    2000000,
+    3000000,
+    4000000,
+    5000000,
+    6000000,
+    7000000,
+    8000000,
+    9000000,
+    10000000
   ];
   return (
     <Container>
@@ -79,7 +117,16 @@ const MileStone = () => {
           return (
             <Wrapper key={index} active={totalPrice >= milestone}>
               {index > 0 ? <div className="line" /> : null}
-              <div className="node" />
+              <div className="node">
+                {index > 0 && (
+                  <div
+                    className={` ${totalPrice >= milestone ? "open" : "close"}`}
+                  >
+                    {index < 10 && <div>{index}</div>}
+                    {index === 10 && <img src="Images/crown.svg" />}
+                  </div>
+                )}
+              </div>
             </Wrapper>
           );
         })}
