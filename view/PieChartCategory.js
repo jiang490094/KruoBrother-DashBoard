@@ -147,6 +147,7 @@ export default styled(PieChartCategory)`
       margin-right: 4px;
       line-height: 36px;
       text-align: center;
+      border-bottom: 1px dotted white;
     }
 
     .category-name {
