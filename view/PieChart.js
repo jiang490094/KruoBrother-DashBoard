@@ -9,12 +9,8 @@ const PieChart = ({ className, siteName, siteColor, number }) => {
   if (siteName === "松果購物") top = "520px";
   return (
     <div className={className} style={{ top: `${top}` }}>
-      <PieChartTitle
-        siteName={siteName}
-        siteColor={siteColor}
-        number={number}
-      />
-      <PieChartCategory siteName={siteName} />
+      <PieChartTitle siteName={siteName} number={number} />
+      <PieChartCategory siteName={siteName} siteColor={siteColor} />
     </div>
   );
 };

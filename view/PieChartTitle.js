@@ -1,17 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import CountUp from "react-countup";
-import { useContext } from "react";
 
-import { GlobalContext } from "../provider/globalprovider";
-
-const PieChartTitle = ({ className, siteName, siteColor }) => {
-  const { total } = useContext(GlobalContext);
-  let price = total?.buy123?.percentage;
-  if (siteName === "松果購物") {
-    price = total?.pcone?.percentage;
-  }
-
+const PieChartTitle = ({ className, siteName }) => {
   return (
     <>
       <div className={className}>
@@ -27,16 +17,6 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
           </div>
         </div>
 
-        <div className="number">
-          <p className="eight-words">營收占比</p>
-          <p
-            className="title-words number-font"
-            style={{ color: `${siteColor}` }}
-          >
-            <CountUp start={0} end={price} duration={180} />%
-          </p>
-        </div>
-
         <img className="under-line" src="/Images/pie-under-line.png" />
       </div>
     </>
@@ -46,7 +26,6 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
 PieChartTitle.propTypes = {
   className: PropTypes.string.isRequired,
   siteName: PropTypes.string.isRequired,
-  siteColor: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired
 };
 
@@ -87,21 +66,9 @@ export default styled(PieChartTitle)`
     color: white;
   }
 
-  .number {
-    position: absolute;
-    top: 10px;
-    right: 0;
-  }
   .eight-words {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.6);
-  }
-
-  .number-font {
-    font-size: 32px;
-    font-family: Prohibition;
-    line-height: 40px;
-    color: rgba(255, 107, 0, 1);
   }
 
   .under-line {

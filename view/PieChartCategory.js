@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useContext } from "react";
+import CountUp from "react-countup";
 
 import { GlobalContext } from "../provider/globalprovider";
 
@@ -13,44 +14,61 @@ const PieChartCategory = ({ className, siteName }) => {
     buy123CategorySum,
     pconeCategorySum
   } = useContext(GlobalContext);
+  const { total } = useContext(GlobalContext);
+  let price = total?.buy123?.percentage;
+  if (siteName === "松果購物") {
+    price = total?.pcone?.percentage;
+  }
   let objtotal = buy123CategorySum;
   let obj = buy123Categories;
+  let colors = [
+    "rgb(255,111,0,0.7)",
+    "rgb(255,143,0,0.4)",
+    "rgb(255,160,0,0.4)",
+    "rgb(255,179,0,0.4)",
+    "rgb(255,193,7,0.4)",
+    "rgb(255,202,40,0.3)",
+    "rgb(255,213,79,0.2)",
+    "rgb(255,224,130,0.1)",
+    "rgb(255,236,179,0.1)",
+    "rgb(255,248,225,0.1)"
+  ];
   if (siteName === "松果購物") {
     obj = pconeCategories;
     objtotal = pconeCategorySum;
+    colors = [
+      "rgb(237,55,0,0.6)",
+      "rgb(233,84,38,0.4)",
+      "rgb(231,104,66,0.4)",
+      "rgb(224,116,83,0.4)",
+      "rgb(226,127,97,0.4)",
+      "rgb(175,112,94,0.3)",
+      "rgb(135,94,82,0.2)",
+      "rgb(122,94,85,0.1)",
+      "rgb(112,90,83,0.1)",
+      "rgb(93,82,78,0.1)"
+    ];
   }
   // console.log("obj", obj);
   // console.log("pconeSum", pconeSum);
   // console.log("buy123Sum", buy123Sum);
 
   // const colors = [
-  //   "rgb(255,111,0,0.7)",
-  //   "rgb(255,143,0,0.7)",
-  //   "rgb(255,160,0,0.7)",
-  //   "rgb(255,179,0,0.7)",
-  //   "rgb(255,193,7,0.7)",
-  //   "rgb(255,202,40,0.7)",
-  //   "rgb(255,213,79,0.7)",
-  //   "rgb(255,224,130,0.7)",
-  //   "rgb(255,236,179,0.7)",
-  //   "rgb(255,248,225,0.7)"
+  //   "rgba(24, 254, 254, 0.65)",
+  //   "rgba(255, 153, 0, 0.65)",
+  //   "rgba(151, 0, 175, 0.65)",
+  //   "rgba(255, 92, 22, 0.65)",
+  //   "rgba(255, 0, 214, 0.65)",
+  //   "rgba(255, 61, 0, 0.65)",
+  //   "rgba(82, 0, 255, 0.65)",
+  //   "rgba(6, 132, 248, 0.65)",
+  //   "rgba(149, 132, 255, 0.65)",
+  //   "rgba(5, 0, 232, 0.65)"
   // ];
-  const colors = [
-    "rgba(24, 254, 254, 0.65)",
-    "rgba(255, 153, 0, 0.65)",
-    "rgba(151, 0, 175, 0.65)",
-    "rgba(255, 92, 22, 0.65)",
-    "rgba(255, 0, 214, 0.65)",
-    "rgba(255, 61, 0, 0.65)",
-    "rgba(82, 0, 255, 0.65)",
-    "rgba(6, 132, 248, 0.65)",
-    "rgba(149, 132, 255, 0.65)",
-    "rgba(5, 0, 232, 0.65)"
-  ];
 
   return (
     <div className={className}>
-      <div>
+      <div className="rank">
         {obj.map((i, index) => {
           if (index % 2 == 0) {
             let percent = Math.round((i.amount / objtotal) * 100);
@@ -68,15 +86,24 @@ const PieChartCategory = ({ className, siteName }) => {
           }
         })}
       </div>
-      <Pie
-        data={obj}
-        width={200}
-        height={200}
-        innerRadius="0"
-        outerRadius={100}
-        colors={colors}
-      />
-      <div>
+      <div className="pie">
+        <Pie
+          data={obj}
+          width={200}
+          height={200}
+          innerRadius="70"
+          outerRadius={90}
+          colors={colors}
+        />
+        <div className="number">
+          <p className="eight-words">營收占比</p>
+          <p className="title-words number-font">
+            <CountUp start={0} end={price} duration={180} />%
+          </p>
+        </div>
+      </div>
+
+      <div className="rank">
         {obj.map((i, index) => {
           if (index % 2 != 0) {
             let percent = Math.round((i.amount / objtotal) * 100);
@@ -108,6 +135,9 @@ export default styled(PieChartCategory)`
   justify-content: space-between;
   margin-bottom: 58px;
   color: white;
+  .rank {
+    min-width: 150px;
+  }
   .category-list {
     display: flex;
     margin-bottom: 4px;
@@ -128,9 +158,28 @@ export default styled(PieChartCategory)`
       line-height: 36px;
       overflow: hidden;
     }
-
+  }
+  .pie {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     svg {
       position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .number {
+      text-align: center;
+      font-size: 20px;
+      font-family: Prohibition;
+    }
+    .number-font {
+      margin-top: 10px;
+      font-size: 32px;
+      color: ${(props) => props.siteColor};
     }
   }
 `;

@@ -23,7 +23,7 @@ let pconeCategorySum = 1;
 
 let IsFetchRank = false;
 saveItem([], "opened");
-const base = 1000000;
+const base = 10000000;
 let pconeCategory = {};
 let pconeCategories = [];
 const Globalprovider = ({ children }) => {

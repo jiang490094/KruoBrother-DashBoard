@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
+import styled from "styled-components";
 
-const Pie = (props) => {
+const Pie = (props, { className }) => {
   const ref = useRef(null);
   const createPie = d3
     .pie()
@@ -50,11 +51,36 @@ const Pie = (props) => {
   }, [props.data]);
 
   return (
-    <svg width={props.width} height={props.height}>
+    <svg width="600" height="600" className={className}>
       <g
         ref={ref}
-        transform={`translate(${props.outerRadius} ${props.outerRadius})`}
+        strokeWidth="0.5"
+        filter="url(#glow)"
+        id="pie"
+        stroke="white"
+        strokeOpacity="0.5"
+        transform="translate(100,100)"
       />
+      <defs>
+        <linearGradient id="MyGradient">
+          <stop offset="0%" stopColor="#6af9ff" />
+          <stop offset="95%" stopColor="#c9c3ff" />
+        </linearGradient>
+      </defs>
+      <defs>
+        <filter id="glow">
+          <fegaussianblur
+            className="blur"
+            result="coloredBlur"
+            stddeviation="4"
+          />
+          <femerge>
+            <femergenode in="coloredBlur"></femergenode>
+            <femergenode in="coloredBlur"></femergenode>
+            <femergenode in="SourceGraphic"></femergenode>
+          </femerge>
+        </filter>
+      </defs>
     </svg>
   );
 };
@@ -63,9 +89,7 @@ Pie.propTypes = {
   innerRadius: PropTypes.string.isRequired,
   outerRadius: PropTypes.number.isRequired,
   data: PropTypes.array.isRequired,
-  colors: PropTypes.array.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired
+  colors: PropTypes.array.isRequired
 };
 
-export default Pie;
+export default styled(Pie)``;
