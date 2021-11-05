@@ -10,6 +10,7 @@ const Celebrate = dynamic(() => import("../view/celebrate"));
 const SiteNumber = dynamic(() => import("../view/SiteNumber"));
 const Ranking = dynamic(() => import("../view/ranking"));
 const Title = dynamic(() => import("../view/Title"));
+const MileStone = dynamic(() => import("../view/MileStone"));
 
 function HomePage() {
   return (
@@ -26,6 +27,7 @@ function HomePage() {
         <Map />
         <Background />
         <Celebrate />
+        <MileStone />
       </Globalprovider>
     </div>
   );
