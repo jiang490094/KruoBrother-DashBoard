@@ -23,7 +23,7 @@ let pconeCategorySum = 1;
 
 let IsFetchRank = false;
 saveItem([], "opened");
-const base = 10000000;
+const base = 1000000;
 let pconeCategory = {};
 let pconeCategories = [];
 const Globalprovider = ({ children }) => {
@@ -74,7 +74,7 @@ const Globalprovider = ({ children }) => {
     }
   }, [heartBeat]);
   const fetchAll = async (timer) => {
-    if (timer % 30 === 0) {
+    if ((timer && totalPrice == 0) || timer % 30 === 0) {
       const alldata = await fetchData(
         "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_revenue_by_day "
       );
