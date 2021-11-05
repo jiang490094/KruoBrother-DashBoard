@@ -28,7 +28,9 @@ const Title = ({ className }) => {
   return (
     <div className={className}>
       <div className="wording">
-        <p className="title-words">Total</p>
+        <div className="title-words">
+          <span style={{ color: "green" }}>Kuo</span>Brothers Total
+        </div>
       </div>
       <div className="title-number" id="countUpRef">
         $ <CountUp start={0} duration={300} separator="," end={totalPrice} />
@@ -45,20 +47,30 @@ Title.propTypes = {
 export default styled(Title)`
   display: flex;
   position: fixed;
-  left: 50%;
+  left: 53%;
   margin-left: -360px;
   top: 20px;
   z-index: 1;
   color: white;
-
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   .wording {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: end;
+    height: 40px;
+    img {
+      height: 40px;
+    }
   }
   .title-words {
-    font-size: 32px;
+    font-size: 45px;
     margin-top: 8px;
+    font-family: Prohibition;
+    -webkit-text-stroke: 2px lightblue;
+    text-shadow: 0 0 5px lightblue, 0 0 5px gray, 0 0 5px lightblue;
   }
   .tiny-words {
     font-size: 12px;
