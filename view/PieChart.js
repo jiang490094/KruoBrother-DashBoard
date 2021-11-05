@@ -6,7 +6,7 @@ import PieChartCategory from "./PieChartCategory";
 
 const PieChart = ({ className, siteName, siteColor, number }) => {
   let top = "";
-  if (siteName === "松果購物") top = "454px";
+  if (siteName === "松果購物") top = "520px";
   return (
     <div className={className} style={{ top: `${top}` }}>
       <PieChartTitle

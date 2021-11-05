@@ -15,17 +15,19 @@ let buy123Category = {};
 let buy123Categories = [];
 let openRecords = [];
 let displayIncome = 0;
-let buy123Sum = 0;
+let buy123Sum = 1;
 let pconeSum = 0;
+
+let buy123CategorySum = 1;
+let pconeCategorySum = 1;
+
 let IsFetchRank = false;
 saveItem([], "opened");
-const base = 5000000;
+const base = 10000000;
 let pconeCategory = {};
 let pconeCategories = [];
-
 const Globalprovider = ({ children }) => {
   const [heartBeat, setHearBeat] = useState(0);
-
   useEffect(() => {
     const timerID = setInterval(() => {
       setHearBeat((prev) => prev + 1);
@@ -38,21 +40,20 @@ const Globalprovider = ({ children }) => {
     const number = document.getElementById("countUpRef");
     const buy123Number = document.getElementById("buy123CountUP");
     const pconeNumber = document.getElementById("pconeCountUp");
-
     let currentIncome = number.innerText;
     let currentBuyIncome = buy123Number.innerText;
     let currentPconeIncome = pconeNumber.innerText;
-
     currentIncome = parseInt(
-      currentIncome.replace("$", "").replaceAll(",", "")
+      currentIncome.replaceAll("$", "").replaceAll(",", "")
     );
-    buy123Sum = parseInt(currentBuyIncome.replace("$", "").replaceAll(",", ""));
+    buy123Sum = parseInt(
+      currentBuyIncome.replaceAll("$", "").replaceAll(",", "")
+    );
     pconeSum = parseInt(
-      currentPconeIncome.replace("$", "").replaceAll(",", "")
+      currentPconeIncome.replaceAll("$", "").replaceAll(",", "")
     );
     for (let i = 10; i > 0; i--) {
       const goal = i * base;
-
       if (currentIncome / goal > 1) {
         const records = loadItem("opened");
         const IsAlreadyOpen = records.includes(i);
@@ -72,13 +73,11 @@ const Globalprovider = ({ children }) => {
       }
     }
   }, [heartBeat]);
-
   const fetchAll = async (timer) => {
     if (timer % 30 === 0) {
       const alldata = await fetchData(
         "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_revenue_by_day "
       );
-
       cityData = alldata?.data?.city;
       total = alldata?.data?.total;
       totalPrice = alldata?.data?.total?.revenue;
@@ -105,6 +104,9 @@ const Globalprovider = ({ children }) => {
 
   useEffect(() => {
     const nextObj = RankData.shift();
+    if (!nextObj) return;
+    const cloneNextObj = JSON.parse(JSON.stringify(nextObj));
+
     let newObject = { ...rank };
     if (nextObj?.item_id in newObject) {
       newObject[nextObj?.item_id].amount += parseInt(nextObj?.amount);
@@ -116,61 +118,57 @@ const Globalprovider = ({ children }) => {
     }
     rank = newObject;
     const newArray = Object.values(newObject);
-
     newArray.sort(function (a, b) {
       return b.amount - a.amount;
     });
     const finalArray = newArray.slice(0, 10);
     rankDisplay = finalArray;
     fetchAll(heartBeat);
-  }, [heartBeat]);
 
-  useEffect(() => {
-    const nextObj = RankData.shift();
-    // console.log("nextObj", nextObj);
-    if (!nextObj) return;
+    // --------------------category-------------------
+
     let buy123List = { ...buy123Category };
     let pconeList = { ...pconeCategory };
-    // console.log("asdsadsadsada", buy123List, pconeList);
+    let buy123SumArray = [];
+    let pconeSumArray = [];
 
-    // let buy123Amount = [];
-    // console.log("aa", buy123Amount);
-    // Object.assign(nextObj, { percent: "" });
-    nextObj["percent"] = 0;
-    // console.log(nextObj);
+    cloneNextObj["percent"] = 0;
     if (nextObj?.site === "buy123") {
-      // console.log()
-      if (!(nextObj?.category_name in buy123List)) {
-        buy123List[nextObj?.category_name] = {}; //接上api後換成分類id
-        buy123List[nextObj?.category_name].category_name =
-          nextObj.category_name;
-        buy123List[nextObj?.category_name].site = nextObj.site;
-        buy123List[nextObj?.category_name].amount = 0;
+      if (!(cloneNextObj?.category_name in buy123List)) {
+        buy123List[cloneNextObj?.category_name] = {}; //接上api後換成分類id
+        buy123List[cloneNextObj?.category_name].category_name =
+          cloneNextObj.category_name;
+        buy123List[cloneNextObj?.category_name].site = cloneNextObj.site;
+        buy123List[cloneNextObj?.category_name].amount = 0;
       }
-      buy123List[nextObj?.category_name].amount += parseInt(nextObj?.amount);
-      buy123List[nextObj?.category_name].percent =
-        (buy123List[nextObj?.category_name].amount / buy123Sum) * 10000;
+      buy123List[cloneNextObj?.category_name].amount += parseInt(
+        cloneNextObj?.amount
+      );
+      buy123List[cloneNextObj?.category_name].percent =
+        (buy123List[cloneNextObj?.category_name].amount / buy123Sum) * 100;
     }
     buy123Category = buy123List;
 
-    if (nextObj?.site === "pcone") {
-      if (!(nextObj?.category_name in pconeList)) {
-        pconeList[nextObj?.category_name] = {};
-        pconeList[nextObj?.category_name].category_name =
-          nextObj?.category_name;
-        pconeList[nextObj?.category_name].site = nextObj.site;
-        pconeList[nextObj?.category_name].amount = 0;
-        pconeList[nextObj?.category_name].percent = 0;
+    if (cloneNextObj?.site === "pcone") {
+      if (!(cloneNextObj?.category_name in pconeList)) {
+        pconeList[cloneNextObj?.category_name] = {};
+        pconeList[cloneNextObj?.category_name].category_name =
+          cloneNextObj?.category_name;
+        pconeList[cloneNextObj?.category_name].site = nextObj.site;
+        pconeList[cloneNextObj?.category_name].amount = 0;
+        pconeList[cloneNextObj?.category_name].percent = 0;
       }
-      pconeList[nextObj?.category_name].amount += parseInt(nextObj?.amount);
-      pconeList[nextObj?.category_name].percent =
-        (pconeList[nextObj?.category_name].amount / pconeSum) * 100;
+      pconeList[cloneNextObj?.category_name].amount += parseInt(
+        cloneNextObj?.amount
+      );
+      pconeList[cloneNextObj?.category_name].percent =
+        (pconeList[cloneNextObj?.category_name].amount / pconeCategorySum) *
+        100;
     }
     pconeCategory = pconeList;
 
     const newBuy123 = Object.values(buy123List);
     const newPcone = Object.values(pconeList);
-
     newBuy123.sort(function (a, b) {
       return b.amount - a.amount;
     });
@@ -182,10 +180,23 @@ const Globalprovider = ({ children }) => {
 
     buy123Categories = finalBuy123;
     pconeCategories = finalPcone;
-
-    // console.log("buy123Categories", buy123Categories);
-    // console.log("pconeCategories", pconeCategories);
+    for (let i = 0; i < buy123Categories.length; i++) {
+      buy123SumArray.push(buy123Categories[i].amount);
+    }
+    for (let i = 0; i < pconeCategories.length; i++) {
+      pconeSumArray.push(pconeCategories[i].amount);
+    }
+    buy123CategorySum = SumData(buy123SumArray);
+    pconeCategorySum = SumData(pconeSumArray);
   }, [heartBeat]);
+
+  function SumData(arr) {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+      sum += arr[i];
+    }
+    return sum;
+  }
 
   return (
     <GlobalContext.Provider
@@ -200,7 +211,9 @@ const Globalprovider = ({ children }) => {
         displayIncome,
         buy123Sum,
         pconeSum,
-        pconeCategories
+        pconeCategories,
+        buy123CategorySum,
+        pconeCategorySum
       }}
     >
       {children}
