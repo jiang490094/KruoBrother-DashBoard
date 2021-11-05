@@ -14,15 +14,17 @@ const SiteNumber = ({ className }) => {
       <img src="Images/dot-line.png" />
       <div className="site-number">
         <div className="buy123">
-          <div className="site-line">
-            <p>分站</p>生活市集
+          <div>
+            <div className="title">Total</div>
+            <div className="site-line">生活市集</div>
           </div>
           <SiteCoutUp price={total?.buy123?.amount} site="buy123" />
         </div>
         <img className="under-line" src="/Images/pie-under-line.png" />
         <div className="buy123 pcone">
-          <div className="site-line">
-            <p>分站</p>松果購物
+          <div>
+            <div className="title">Total</div>
+            <div className="site-line">松果購物</div>
           </div>
           <SiteCoutUp price={total?.pcone?.amount} site="pcone" />
         </div>
@@ -42,6 +44,7 @@ export default styled(SiteNumber)`
   position: fixed;
   right: 26px;
   bottom: 30px;
+  font-family: Prohibition;
   img {
     display: block;
   }
@@ -53,17 +56,15 @@ export default styled(SiteNumber)`
     .buy123 {
       display: flex;
       font-size: 30px;
-      padding-left: 12px;
-      padding-top: 15px;
+      padding: 12px;
       background-color: #44474c6b;
-
+      align-items: flex-end;
       p {
         font-size: 12px;
         color: rgba(255, 255, 255, 0.6);
         margin-bottom: 4px;
       }
       .total-number {
-        font-family: Prohibition;
         font-size: 45px;
         margin-left: 18px;
       }
@@ -74,6 +75,9 @@ export default styled(SiteNumber)`
     }
 
     .style-line::before {
+    }
+    .title {
+      font-size: 16px;
     }
   }
 `;
