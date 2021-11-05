@@ -9,13 +9,12 @@ const Title = ({ className }) => {
   const { totalPrice } = useContext(GlobalContext);
   return (
     <div className={className}>
-      <div>
-        <p className="tiny-words">即時監視 15m-</p>
-        <p className="title-words">總交易額</p>
-        <img src="Images/title-total-line.png" />
+      <div className="wording">
+        <p className="title-words">Total</p>
       </div>
       <div className="title-number" id="countUpRef">
         $ <CountUp start={0} duration={300} separator="," end={totalPrice} />
+        <div className="amount-line"></div>
       </div>
     </div>
   );
@@ -28,10 +27,24 @@ Title.propTypes = {
 export default styled(Title)`
   display: flex;
   position: fixed;
-  left: 571px;
-  top: 6px;
+  left: 50%;
+  margin-left: -360px;
+  top: 20px;
   z-index: 1;
   color: white;
+
+  .wording {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .amount-line {
+    width: 500px;
+    height: 7px;
+    background: linear-gradient(0.25turn, #ff6b00 50%, #f7422f 50%);
+    margin-top: 20px;
+    border-radius: 4px;
+  }
   .title-words {
     font-size: 32px;
     margin-top: 8px;
@@ -44,6 +57,7 @@ export default styled(Title)`
   }
 
   .title-number {
+    letter-spacing: 10px;
     margin-left: 30px;
     font-family: Prohibition;
     font-size: 100px;
