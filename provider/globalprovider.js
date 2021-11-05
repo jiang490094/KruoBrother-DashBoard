@@ -1,11 +1,10 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { RankData } from "../textCase/testCase";
 import fetchData, { saveItem, loadItem } from "../util";
 
 export const GlobalContext = createContext({});
-// let RankData = [];
+let RankData = [];
 let rank = {};
 let rankDisplay = [];
 let cityData = {};
@@ -19,9 +18,10 @@ let displayIncome = 0;
 let buy123Sum = 1;
 let pconeSum = 0;
 
-// let buy123CategorySum = 1;
+let buy123CategorySum = 1;
 let pconeCategorySum = 1;
-// let IsFetchRank = false;
+
+let IsFetchRank = false;
 saveItem([], "opened");
 const base = 10000000;
 let pconeCategory = {};
@@ -37,18 +37,21 @@ const Globalprovider = ({ children }) => {
     };
   }, []);
   useEffect(() => {
-    console.log(buy123Sum);
     const number = document.getElementById("countUpRef");
     const buy123Number = document.getElementById("buy123CountUP");
     const pconeNumber = document.getElementById("pconeCountUp");
     let currentIncome = number.innerText;
     let currentBuyIncome = buy123Number.innerText;
     let currentPconeIncome = pconeNumber.innerText;
-    currentIncome = parseInt(currentIncome.replaceAll(",", ""));
+    currentIncome = parseInt(
+      currentIncome.replaceAll("$", "").replaceAll(",", "")
+    );
     buy123Sum = parseInt(
       currentBuyIncome.replaceAll("$", "").replaceAll(",", "")
     );
-    pconeSum = parseInt(currentPconeIncome.replaceAll(",", ""));
+    pconeSum = parseInt(
+      currentPconeIncome.replaceAll("$", "").replaceAll(",", "")
+    );
     for (let i = 10; i > 0; i--) {
       const goal = i * base;
       if (currentIncome / goal > 1) {
@@ -82,25 +85,26 @@ const Globalprovider = ({ children }) => {
       return;
     }
   };
-  // const fetchRank = async () => {
-  //   if (RankData.length === 0 && !IsFetchRank) {
-  //     IsFetchRank = true;
-  //     const prodRow = await fetchData(
-  //       "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_buyer_info"
-  //     );
-  //     const newData = prodRow?.data;
-  //     RankData = RankData.concat(newData);
-  //     IsFetchRank = false;
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (RankData.length === 0) {
-  //     fetchRank();
-  //   }
-  // }, [heartBeat]);
+  const fetchRank = async () => {
+    if (RankData.length === 0 && !IsFetchRank) {
+      IsFetchRank = true;
+      const prodRow = await fetchData(
+        "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_buyer_info"
+      );
+      const newData = prodRow?.data;
+      RankData = RankData.concat(newData);
+      IsFetchRank = false;
+    }
+  };
+  useEffect(() => {
+    if (RankData.length === 0) {
+      fetchRank();
+    }
+  }, [heartBeat]);
 
   useEffect(() => {
     const nextObj = RankData.shift();
+    if (!nextObj) return;
     const cloneNextObj = JSON.parse(JSON.stringify(nextObj));
 
     let newObject = { ...rank };
@@ -123,10 +127,10 @@ const Globalprovider = ({ children }) => {
 
     // --------------------category-------------------
 
-    if (!cloneNextObj) return;
     let buy123List = { ...buy123Category };
     let pconeList = { ...pconeCategory };
     let buy123SumArray = [];
+    let pconeSumArray = [];
 
     cloneNextObj["percent"] = 0;
     if (nextObj?.site === "buy123") {
@@ -140,7 +144,6 @@ const Globalprovider = ({ children }) => {
       buy123List[cloneNextObj?.category_name].amount += parseInt(
         cloneNextObj?.amount
       );
-      console.log("buy123CategorySumbuy123CategorySum", buy123Sum);
       buy123List[cloneNextObj?.category_name].percent =
         (buy123List[cloneNextObj?.category_name].amount / buy123Sum) * 100;
     }
@@ -177,14 +180,14 @@ const Globalprovider = ({ children }) => {
 
     buy123Categories = finalBuy123;
     pconeCategories = finalPcone;
-    console.log("buy123Categories", buy123Categories);
-    // SumArray(buy123SumArray, buy123Categories);
     for (let i = 0; i < buy123Categories.length; i++) {
       buy123SumArray.push(buy123Categories[i].amount);
-      console.log(buy123SumArray);
     }
-    buy123Sum = SumData(buy123SumArray);
-    console.log(buy123Sum);
+    for (let i = 0; i < pconeCategories.length; i++) {
+      pconeSumArray.push(pconeCategories[i].amount);
+    }
+    buy123CategorySum = SumData(buy123SumArray);
+    pconeCategorySum = SumData(pconeSumArray);
   }, [heartBeat]);
 
   function SumData(arr) {
@@ -208,7 +211,9 @@ const Globalprovider = ({ children }) => {
         displayIncome,
         buy123Sum,
         pconeSum,
-        pconeCategories
+        pconeCategories,
+        buy123CategorySum,
+        pconeCategorySum
       }}
     >
       {children}

@@ -8,9 +8,18 @@ import { GlobalContext } from "../provider/globalprovider";
 import Pie from "./Pie";
 
 const PieChartCategory = ({ className, siteName }) => {
-  const { buy123Categories, pconeCategories } = useContext(GlobalContext);
+  const {
+    buy123Categories,
+    pconeCategories,
+    buy123CategorySum,
+    pconeCategorySum
+  } = useContext(GlobalContext);
+  let objtotal = buy123CategorySum;
   let obj = buy123Categories;
-  if (siteName === "松果購物") obj = pconeCategories;
+  if (siteName === "松果購物") {
+    obj = pconeCategories;
+    objtotal = pconeCategorySum;
+  }
   // console.log("obj", obj);
   // console.log("pconeSum", pconeSum);
   // console.log("buy123Sum", buy123Sum);
@@ -33,13 +42,14 @@ const PieChartCategory = ({ className, siteName }) => {
       <div>
         {obj.map((i, index) => {
           if (index % 2 == 0) {
+            let percent = (i.amount / objtotal) * 100;
             return (
               <div className="category-list" key={index}>
                 <div
                   className="category-number"
                   style={{ borderLeft: `4px solid ${colors[index]}` }}
                 >
-                  <CountUp start={0} end={i.percent} duration={2} />%
+                  <CountUp start={0} end={percent} duration={2} />%
                 </div>
                 <div className="category-name">{i.category_name}</div>
               </div>
@@ -58,13 +68,14 @@ const PieChartCategory = ({ className, siteName }) => {
       <div>
         {obj.map((i, index) => {
           if (index % 2 != 0) {
+            let percent = (i.amount / objtotal) * 100;
             return (
               <div className="category-list" key={index}>
                 <div
                   className="category-number"
                   style={{ borderLeft: `4px solid ${colors[index]}` }}
                 >
-                  <CountUp start={0} end={i.percent} duration={2} />%
+                  <CountUp start={0} end={percent} duration={2} />%
                 </div>
                 <div className="category-name">{i.category_name}</div>
               </div>
