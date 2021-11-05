@@ -98,20 +98,17 @@ export default styled(PieChartCategory)`
     }
 
     .category-name {
-      ${"" /* min-width: 100px;  */}
+      width: 90px;
       height: 36px;
       padding-left: 9px;
       color: white;
       font-size: 14px;
       line-height: 36px;
+      overflow: hidden;
     }
-  }
 
-  #pie {
-    width: 175px;
-  }
-
-  #piePcone {
-    width: 175px;
+    svg {
+      position: absolute;
+    }
   }
 `;

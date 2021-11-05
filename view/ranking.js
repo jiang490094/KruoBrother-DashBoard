@@ -44,9 +44,6 @@ const Ranking = ({ className }) => {
       <div className="content">
         {rankDisplay.length > 0 &&
           rankDisplay.map((item, key) => {
-            {
-              /* console.log(item); */
-            }
             if (!item?.item_name) return <></>;
             const progress =
               key === 0
@@ -86,7 +83,7 @@ export default styled(Ranking)`
   z-index: 900;
   width: 23vw;
   height: 100vh;
-  padding: 20px;
+  padding: 30px 0 20px 20px;
   .logo {
     width: 100%;
     display: grid;
@@ -145,7 +142,7 @@ export default styled(Ranking)`
     flex-direction: column;
     height: fit-content;
     .info-card {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
     .info {
       display: flex;
@@ -175,7 +172,7 @@ export default styled(Ranking)`
         .item-name {
           margin-left: 20px;
           color: whtie;
-          width: 300px;
+          width: 220px;
           max-height: 40px;
           display: -webkit-box;
           -webkit-box-orient: vertical;
@@ -186,8 +183,9 @@ export default styled(Ranking)`
       .count {
         display: flex;
         flex-direction: column;
-        text-align: center;
+        text-align: end;
         font-family: Prohibition;
+        width: fit-content;
         .count-title {
           font-size: 13px;
         }
