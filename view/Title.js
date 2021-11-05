@@ -5,8 +5,26 @@ import { useContext } from "react";
 
 import { GlobalContext } from "../provider/globalprovider";
 
+const AmountLine = styled.div`
+  width: 550px;
+  height: 9px;
+  background: ${(props) => {
+    return `linear-gradient(0.25turn, #ff6a00 ${props.buy123}%, #f8331d ${props.pcone}%);`;
+  }};
+  margin-top: 20px;
+  border-radius: 4px;
+  transition: 0.3s;
+`;
+
 const Title = ({ className }) => {
-  const { totalPrice } = useContext(GlobalContext);
+  const { totalPrice, buy123Sum, pconeSum } = useContext(GlobalContext);
+  const lineTotal = buy123Sum + pconeSum;
+  const buy123_percent =
+    Math.floor((buy123Sum / lineTotal) * 10000) / 100
+      ? Math.floor((buy123Sum / lineTotal) * 10000) / 100
+      : 100;
+  const pcone_percent = 100 - buy123_percent ? 100 - buy123_percent : 0;
+
   return (
     <div className={className}>
       <div className="wording">
@@ -14,7 +32,7 @@ const Title = ({ className }) => {
       </div>
       <div className="title-number" id="countUpRef">
         $ <CountUp start={0} duration={300} separator="," end={totalPrice} />
-        <div className="amount-line"></div>
+        <AmountLine buy123={buy123_percent} pcone={pcone_percent} />
       </div>
     </div>
   );
@@ -37,13 +55,6 @@ export default styled(Title)`
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-  }
-  .amount-line {
-    width: 500px;
-    height: 7px;
-    background: linear-gradient(0.25turn, #ff6b00 50%, #f7422f 50%);
-    margin-top: 20px;
-    border-radius: 4px;
   }
   .title-words {
     font-size: 32px;
