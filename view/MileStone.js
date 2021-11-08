@@ -15,7 +15,7 @@ const Container = styled.div`
   bottom: 30px;
   height: 40px;
   left: 26vw;
-
+  transform: scale(0.8);
   .progress-bar {
     height: 100%;
     display: flex;

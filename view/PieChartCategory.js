@@ -98,7 +98,7 @@ const PieChartCategory = ({ className, siteName }) => {
         <div className="number">
           <p className="eight-words">營收占比</p>
           <p className="title-words number-font">
-            <CountUp start={0} end={price} duration={180} />%
+            <CountUp start={0} end={price} duration={30} />%
           </p>
         </div>
       </div>

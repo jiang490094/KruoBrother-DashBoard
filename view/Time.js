@@ -49,7 +49,7 @@ export default styled(Time)`
   font-family: Prohibition;
   color: white;
   position: relative;
-  right: -25px;
+  right: 0;
   margin-bottom: 24px;
   margin-top: 30px;
   .now {
