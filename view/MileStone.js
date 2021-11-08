@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useContext } from "react";
 import styled, { keyframes } from "styled-components";
 
@@ -14,7 +15,7 @@ const Container = styled.div`
   bottom: 30px;
   height: 40px;
   left: 26vw;
-
+  transform: scale(0.8);
   .progress-bar {
     height: 100%;
     display: flex;
@@ -26,7 +27,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-
+  position: relative;
   .node {
     transition: 0.3s;
     width: 15px;
@@ -45,7 +46,7 @@ const Wrapper = styled.div`
       width: 30px;
       height: 30px;
       /* border: 3px dotted orange; */
-      font-size: 20px;
+      font-size: 24px;
       border-radius: 50%;
       font-family: Prohibition;
       transition: all 1s;
@@ -79,17 +80,26 @@ const Wrapper = styled.div`
   }
 `;
 
-const ActiveLine = styled.div`
+const ActiveLineContainer = styled.div`
+  position: absolute;
+  left: 23px;
   transition: 0.3s;
+  /* width: 44px; */
   width: ${(props) => {
-    console.log(props.percent);
-    return 850 * props.percent + "px";
+    return props.percent * 61 + "px";
   }};
   height: 5px;
   border-radius: 2px;
   background: #80ffee;
-  position: fixed;
 `;
+
+const ActiveLine = ({ percent }) => {
+  return <ActiveLineContainer percent={percent >= 1 ? 1 : percent} />;
+};
+
+ActiveLine.propTypes = {
+  percent: PropTypes.number.isRequired
+};
 
 const MileStone = () => {
   const { buy123Sum, pconeSum } = useContext(GlobalContext);
@@ -97,26 +107,29 @@ const MileStone = () => {
   const totalPrice = buy123Sum + pconeSum;
 
   const milestones = [
-    0,
-    1000000,
-    2000000,
-    3000000,
-    4000000,
-    5000000,
-    6000000,
-    7000000,
-    8000000,
-    9000000,
-    10000000
+    1,
+    10000000,
+    20000000,
+    30000000,
+    40000000,
+    50000000,
+    60000000,
+    70000000,
+    80000000,
+    90000000,
+    100000000
   ];
   return (
     <Container>
       <div className="progress-bar">
-        <ActiveLine percent={totalPrice / milestones[10]} />
         {milestones.map((milestone, index) => {
           return (
-            <Wrapper key={index} active={totalPrice >= milestone}>
-              {index > 0 ? <div className="line" /> : null}
+            <Wrapper
+              key={index}
+              active={totalPrice >= milestone}
+              percent={totalPrice / milestones[10]}
+              index={index}
+            >
               <div className="node">
                 {index > 0 && (
                   <div
@@ -127,6 +140,16 @@ const MileStone = () => {
                   </div>
                 )}
               </div>
+              {index >= 0 && index < 10 ? <div className="line" /> : null}
+              {index >= 0 && index < 10 ? (
+                <ActiveLine
+                  percent={
+                    totalPrice - milestones[index] > 0
+                      ? (totalPrice - milestones[index]) / 1000000
+                      : 0
+                  }
+                />
+              ) : null}{" "}
             </Wrapper>
           );
         })}

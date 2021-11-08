@@ -79,7 +79,7 @@ const Ranking = ({ className }) => {
 export default styled(Ranking)`
   color: white;
   position: fixed;
-  left: 0;
+  left: 40px;
   z-index: 900;
   width: 23vw;
   height: 100vh;

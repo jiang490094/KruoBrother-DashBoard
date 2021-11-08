@@ -40,9 +40,9 @@ SiteNumber.propTypes = {
 
 export default styled(SiteNumber)`
   color: white;
-  width: 500px;
+  width: 480px;
   position: fixed;
-  right: 26px;
+  right: 60px;
   bottom: 30px;
   font-family: Prohibition;
   img {
