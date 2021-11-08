@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useContext } from "react";
-import Marquee from "react-fast-marquee";
 
 import { GlobalContext } from "../provider/globalprovider";
 
@@ -9,47 +8,50 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
   const { rankDisplay } = useContext(GlobalContext);
   let topArray = [];
   let site = "buy123";
-
+  let s = 5;
   if (siteName === "松果購物") {
     site = "pcone";
   }
-  // console.log(rankDisplay);
   for (let i = 0; i < rankDisplay.length; i++) {
     if (rankDisplay[i].site == site) {
       topArray.push(rankDisplay[i].item_name);
     }
   }
-  // console.log(topArray[0]);
+
+  if (topArray[0] && topArray[0].length > 20) {
+    s = 8;
+  }
+
   return (
-    <>
-      <div className={className}>
-        <img className="buy123-line" src="/Images/pie-buy123-line.png" />
-        <div className="words">
-          <div className="previous-word">
-            <span className="tiny-words">集團</span>
-            <span className="title-words">{siteName}</span>
-            {/* <span>
+    <div className={className}>
+      <img className="buy123-line" src="/Images/pie-buy123-line.png" />
+      <div className="words">
+        <div className="previous-word">
+          <span className="tiny-words">集團</span>
+          <span className="title-words">{siteName}</span>
+          {/* <span>
               <p className="category-words">分類排行</p>
               <p className="eight-words">前8名熱門排行</p>
             </span> */}
-          </div>
         </div>
-
-        <div className="number">
-          <div className="eight-words">top product</div>
-          <div
-            className="title-words number-font"
-            style={{ color: `${siteColor}` }}
-          >
-            <Marquee gradient={false} gradientWidth="50" speed="50">
-              {topArray[0]}
-            </Marquee>
-          </div>
-        </div>
-
-        <img className="under-line" src="/Images/pie-under-line.png" />
       </div>
-    </>
+
+      <div className="number">
+        <div className="eight-words">top product</div>
+        <div
+          className="title-words number-font"
+          style={{ color: `${siteColor}` }}
+        >
+          <div className="marquee">
+            <p style={{ animation: `scroll-left ${s}s linear infinite` }}>
+              {topArray[0]}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <img className="under-line" src="/Images/pie-under-line.png" />
+    </div>
   );
 };
 
@@ -121,6 +123,32 @@ export default styled(PieChartTitle)`
   }
 
   .marquee {
-    margin-right: 50px;
+    width: 200px;
+    height: 50px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .marquee p {
+    white-space: nowrap;
+    position: absolute;
+    height: 100%;
+    margin: 0;
+    line-height: 50px;
+    text-align: center;
+    transform: translateX(100%);
+  }
+
+  @keyframes scroll-left {
+    0% {
+      -moz-transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+      transform: translateX(100%);
+    }
+    100% {
+      -moz-transform: translateX(-100%);
+      -webkit-transform: translateX(-100%);
+      transform: translateX(-100%);
+    }
   }
 `;
