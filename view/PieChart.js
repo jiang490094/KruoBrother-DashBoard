@@ -32,7 +32,7 @@ PieChart.propTypes = {
 
 export default styled(PieChart)`
   position: fixed;
-  right: 20px;
+  right: 50px;
   width: 500px;
   margin-left: 15px;
 `;

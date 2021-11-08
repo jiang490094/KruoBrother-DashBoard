@@ -14,7 +14,7 @@ const Container = styled.div`
   bottom: 30px;
   height: 40px;
   left: 26vw;
-
+  transform: scale(0.8);
   .progress-bar {
     height: 100%;
     display: flex;
@@ -26,7 +26,6 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-
   .node {
     transition: 0.3s;
     width: 15px;
@@ -98,16 +97,16 @@ const MileStone = () => {
 
   const milestones = [
     0,
-    1000000,
-    2000000,
-    3000000,
-    4000000,
-    5000000,
-    6000000,
-    7000000,
-    8000000,
-    9000000,
-    10000000
+    10000000,
+    20000000,
+    30000000,
+    40000000,
+    50000000,
+    60000000,
+    70000000,
+    80000000,
+    90000000,
+    100000000
   ];
   return (
     <Container>
