@@ -81,6 +81,7 @@ const Globalprovider = ({ children }) => {
       cityData = alldata?.data?.city;
       total = alldata?.data?.total;
       totalPrice = alldata?.data?.total?.revenue;
+      saveItem(totalPrice, "lastTotal");
     } else {
       return;
     }

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CountUp from "react-countup";
 import { useContext } from "react";
 
+import { loadItem } from "../util";
 import { GlobalContext } from "../provider/globalprovider";
 
 const AmountLine = styled.div`
@@ -19,6 +20,7 @@ const AmountLine = styled.div`
 const Title = ({ className }) => {
   const { totalPrice, buy123Sum, pconeSum } = useContext(GlobalContext);
   const lineTotal = buy123Sum + pconeSum;
+  const lastTotal = loadItem("lastTotal");
   const buy123_percent =
     Math.floor((buy123Sum / lineTotal) * 10000) / 100
       ? Math.floor((buy123Sum / lineTotal) * 10000) / 100
@@ -33,7 +35,13 @@ const Title = ({ className }) => {
         </div>
       </div>
       <div className="title-number" id="countUpRef">
-        $ <CountUp start={0} duration={300} separator="," end={totalPrice} />
+        ${" "}
+        <CountUp
+          start={lastTotal}
+          duration={300}
+          separator=","
+          end={totalPrice}
+        />
         <AmountLine buy123={buy123_percent} pcone={pcone_percent} />
       </div>
     </div>

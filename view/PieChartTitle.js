@@ -37,14 +37,14 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
 
         <div className="number">
           <p className="eight-words">top product</p>
-          <p
+          <div
             className="title-words number-font"
             style={{ color: `${siteColor}` }}
           >
             <Marquee gradient={false} gradientWidth="50" speed="50">
               {topArray[0]}
             </Marquee>
-          </p>
+          </div>
         </div>
 
         <img className="under-line" src="/Images/pie-under-line.png" />
