@@ -49,7 +49,7 @@ export default styled(Title)`
   position: fixed;
   left: 53%;
   margin-left: -360px;
-  top: 20px;
+  top: 50px;
   z-index: 1;
   color: white;
   flex-direction: column;
