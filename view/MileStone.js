@@ -102,9 +102,7 @@ ActiveLine.propTypes = {
 };
 
 const MileStone = () => {
-  const { buy123Sum, pconeSum } = useContext(GlobalContext);
-
-  const totalPrice = buy123Sum + pconeSum;
+  const { totalPrice } = useContext(GlobalContext);
 
   const milestones = [
     1,
@@ -145,7 +143,7 @@ const MileStone = () => {
                 <ActiveLine
                   percent={
                     totalPrice - milestones[index] > 0
-                      ? (totalPrice - milestones[index]) / 1000000
+                      ? (totalPrice - milestones[index]) / 10000000
                       : 0
                   }
                 />
