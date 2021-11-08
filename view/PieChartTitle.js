@@ -36,7 +36,11 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
         </div>
 
         <div className="number">
+<<<<<<< HEAD
           <div className="eight-words">top product</div>
+=======
+          <p className="eight-words">top product</p>
+>>>>>>> 77d9a35a06bdae7e8a94cdcfdd2a181c6e0b35aa
           <div
             className="title-words number-font"
             style={{ color: `${siteColor}` }}
