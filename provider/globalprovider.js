@@ -17,12 +17,14 @@ let openRecords = [];
 let displayIncome = 0;
 let buy123Sum = 1;
 let pconeSum = 0;
-
+let lastTotalPrice = 0;
 let buy123CategorySum = 1;
 let pconeCategorySum = 1;
 
 let IsFetchRank = false;
 saveItem([], "opened");
+saveItem(lastTotalPrice, "lastTotal");
+
 const base = 10000000;
 let pconeCategory = {};
 let pconeCategories = [];
@@ -74,14 +76,24 @@ const Globalprovider = ({ children }) => {
     }
   }, [heartBeat]);
   const fetchAll = async (timer) => {
-    if ((timer && totalPrice == 0) || timer % 30 === 0) {
+    if (timer === 10) {
       const alldata = await fetchData(
         "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_revenue_by_day "
       );
+      saveItem(totalPrice, "lastTotal");
       cityData = alldata?.data?.city;
       total = alldata?.data?.total;
       totalPrice = alldata?.data?.total?.revenue;
+    }
+
+    if (totalPrice > 0 && timer % 30 === 0) {
+      const alldata = await fetchData(
+        "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_revenue_by_day "
+      );
       saveItem(totalPrice, "lastTotal");
+      cityData = alldata?.data?.city;
+      total = alldata?.data?.total;
+      totalPrice = alldata?.data?.total?.revenue;
     } else {
       return;
     }
