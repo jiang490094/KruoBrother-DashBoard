@@ -14,7 +14,7 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
   }
   for (let i = 0; i < rankDisplay.length; i++) {
     if (rankDisplay[i].site == site) {
-      topArray.push(rankDisplay[i].item_name);
+      topArray.push(rankDisplay[i].name);
     }
   }
 

@@ -5,6 +5,7 @@ import fetchData, { saveItem, loadItem } from "../util";
 
 export const GlobalContext = createContext({});
 let RankData = [];
+let categoryRankData = [];
 let rank = {};
 let rankDisplay = [];
 let cityData = {};
@@ -22,6 +23,7 @@ let buy123CategorySum = 1;
 let pconeCategorySum = 1;
 
 let IsFetchRank = false;
+let IsFetchCategoryRank = false;
 saveItem([], "opened");
 saveItem(lastTotalPrice, "lastTotal");
 
@@ -102,32 +104,50 @@ const Globalprovider = ({ children }) => {
     if (RankData.length === 0 && !IsFetchRank) {
       IsFetchRank = true;
       const prodRow = await fetchData(
-        "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/get_buyer_info"
+        "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/top_ten_items"
       );
       const newData = prodRow?.data;
       RankData = RankData.concat(newData);
       IsFetchRank = false;
     }
   };
+
+  const fetchCategoryRank = async () => {
+    if (categoryRankData.length === 0 && !IsFetchCategoryRank) {
+      IsFetchCategoryRank = true;
+      const prodRow = await fetchData(
+        "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/top_ten_category"
+      );
+      const newData = prodRow?.data?.buy123;
+      const newDataPcone = prodRow?.data?.pcone;
+      categoryRankData = categoryRankData.concat(newData, newDataPcone);
+      IsFetchCategoryRank = false;
+    }
+  };
+
   useEffect(() => {
     if (RankData.length === 0) {
       fetchRank();
+    }
+    if (categoryRankData.length === 0) {
+      fetchCategoryRank();
     }
   }, [heartBeat]);
 
   useEffect(() => {
     const nextObj = RankData.shift();
     if (!nextObj) return;
-    const cloneNextObj = JSON.parse(JSON.stringify(nextObj));
+    const cloneNextObj = categoryRankData.shift();
+    if (!cloneNextObj) return;
 
     let newObject = { ...rank };
-    if (nextObj?.item_id in newObject) {
-      newObject[nextObj?.item_id].amount += parseInt(nextObj?.amount);
+    if (nextObj?.name in newObject) {
+      // newObject[nextObj?.name].amount += parseInt(nextObj?.amount);
     } else {
-      newObject[nextObj?.item_id] = {};
-      newObject[nextObj?.item_id].amount = parseInt(nextObj?.amount);
-      newObject[nextObj?.item_id].item_name = nextObj?.item_name;
-      newObject[nextObj?.item_id].site = nextObj?.site;
+      newObject[nextObj?.name] = {};
+      newObject[nextObj?.name].amount = parseInt(nextObj?.amount);
+      newObject[nextObj?.name].name = nextObj?.name;
+      newObject[nextObj?.name].site = nextObj?.site;
     }
     rank = newObject;
     const newArray = Object.values(newObject);
@@ -136,6 +156,7 @@ const Globalprovider = ({ children }) => {
     });
     const finalArray = newArray.slice(0, 10);
     rankDisplay = finalArray;
+    console.log("rankDisplay", rankDisplay);
     fetchAll(heartBeat);
 
     // --------------------category-------------------
@@ -147,36 +168,33 @@ const Globalprovider = ({ children }) => {
 
     cloneNextObj["percent"] = 0;
     if (nextObj?.site === "buy123") {
-      if (!(cloneNextObj?.category_name in buy123List)) {
-        buy123List[cloneNextObj?.category_name] = {}; //接上api後換成分類id
-        buy123List[cloneNextObj?.category_name].category_name =
-          cloneNextObj.category_name;
-        buy123List[cloneNextObj?.category_name].site = cloneNextObj.site;
-        buy123List[cloneNextObj?.category_name].amount = 0;
+      if (!(cloneNextObj?.category in buy123List)) {
+        buy123List[cloneNextObj?.category] = {}; //接上api後換成分類id
+        buy123List[cloneNextObj?.category].category = cloneNextObj.category;
+        buy123List[cloneNextObj?.category].site = cloneNextObj.site;
+        buy123List[cloneNextObj?.category].amount = 0;
       }
-      buy123List[cloneNextObj?.category_name].amount += parseInt(
+      buy123List[cloneNextObj?.category].amount += parseInt(
         cloneNextObj?.amount
       );
-      buy123List[cloneNextObj?.category_name].percent =
-        (buy123List[cloneNextObj?.category_name].amount / buy123Sum) * 100;
+      buy123List[cloneNextObj?.category].percent =
+        (buy123List[cloneNextObj?.category].amount / buy123Sum) * 100;
     }
     buy123Category = buy123List;
 
     if (cloneNextObj?.site === "pcone") {
-      if (!(cloneNextObj?.category_name in pconeList)) {
-        pconeList[cloneNextObj?.category_name] = {};
-        pconeList[cloneNextObj?.category_name].category_name =
-          cloneNextObj?.category_name;
-        pconeList[cloneNextObj?.category_name].site = nextObj.site;
-        pconeList[cloneNextObj?.category_name].amount = 0;
-        pconeList[cloneNextObj?.category_name].percent = 0;
+      if (!(cloneNextObj?.category in pconeList)) {
+        pconeList[cloneNextObj?.category] = {};
+        pconeList[cloneNextObj?.category].category = cloneNextObj?.category;
+        pconeList[cloneNextObj?.category].site = nextObj.site;
+        pconeList[cloneNextObj?.category].amount = 0;
+        pconeList[cloneNextObj?.category].percent = 0;
       }
-      pconeList[cloneNextObj?.category_name].amount += parseInt(
+      pconeList[cloneNextObj?.category].amount += parseInt(
         cloneNextObj?.amount
       );
-      pconeList[cloneNextObj?.category_name].percent =
-        (pconeList[cloneNextObj?.category_name].amount / pconeCategorySum) *
-        100;
+      pconeList[cloneNextObj?.category].percent =
+        (pconeList[cloneNextObj?.category].amount / pconeCategorySum) * 100;
     }
     pconeCategory = pconeList;
 

@@ -80,7 +80,7 @@ const PieChartCategory = ({ className, siteName }) => {
                 >
                   {percent}%
                 </div>
-                <div className="category-name">{i.category_name}</div>
+                <div className="category-name">{i.category}</div>
               </div>
             );
           }
@@ -115,7 +115,7 @@ const PieChartCategory = ({ className, siteName }) => {
                 >
                   {percent}%
                 </div>
-                <div className="category-name">{i.category_name}</div>
+                <div className="category-name">{i.category}</div>
               </div>
             );
           }

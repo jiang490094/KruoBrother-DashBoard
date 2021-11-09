@@ -44,7 +44,7 @@ const Ranking = ({ className }) => {
       <div className="content">
         {rankDisplay.length > 0 &&
           rankDisplay.map((item, key) => {
-            if (!item?.item_name) return <></>;
+            if (!item?.name) return <></>;
             const progress =
               key === 0
                 ? 100
@@ -58,7 +58,7 @@ const Ranking = ({ className }) => {
                       {key < 9 && 0}
                       {key + 1}
                     </div>
-                    <div className="item-name">{item.item_name}</div>
+                    <div className="item-name">{item.name}</div>
                   </div>
                   <div className="count">
                     <span className="count-title">銷售金額</span>
