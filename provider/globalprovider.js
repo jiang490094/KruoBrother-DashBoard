@@ -171,7 +171,6 @@ const Globalprovider = ({ children }) => {
     let buy123SumArray = [];
     let pconeSumArray = [];
 
-    buy123NextObj["percent"] = 0;
     if (buy123NextObj?.site === "buy123") {
       if (!(buy123NextObj?.category in buy123List)) {
         buy123List[buy123NextObj?.category] = {};
@@ -182,7 +181,6 @@ const Globalprovider = ({ children }) => {
       buy123List[buy123NextObj?.category].amount += parseInt(
         buy123NextObj?.amount
       );
-      buy123List[buy123NextObj?.category].percent = 0;
     }
     buy123Category = buy123List;
 
@@ -197,7 +195,6 @@ const Globalprovider = ({ children }) => {
       pconeList[pconeNextObj?.category].amount += parseInt(
         pconeNextObj?.amount
       );
-      pconeList[pconeNextObj?.category].percent = 0;
     }
     pconeCategory = pconeList;
 
