@@ -5,7 +5,8 @@ import fetchData, { saveItem, loadItem } from "../util";
 
 export const GlobalContext = createContext({});
 let RankData = [];
-let categoryRankData = [];
+let buy123RankData = [];
+let pconeRankData = [];
 let rank = {};
 let rankDisplay = [];
 let cityData = {};
@@ -113,32 +114,37 @@ const Globalprovider = ({ children }) => {
   };
 
   const fetchCategoryRank = async () => {
-    if (categoryRankData.length === 0 && !IsFetchCategoryRank) {
+    if (
+      buy123RankData.length === 0 &&
+      pconeRankData.length === 0 &&
+      !IsFetchCategoryRank
+    ) {
       IsFetchCategoryRank = true;
       const prodRow = await fetchData(
         "https://alansun-kuo-24hr.dev.kuobrothers.com/api/tvdata/top_ten_category"
       );
-      const newData = prodRow?.data?.buy123;
-      const newDataPcone = prodRow?.data?.pcone;
-      categoryRankData = categoryRankData.concat(newData, newDataPcone);
+      buy123RankData = prodRow?.data?.buy123;
+      pconeRankData = prodRow?.data?.pcone;
       IsFetchCategoryRank = false;
     }
   };
 
   useEffect(() => {
-    if (RankData.length === 0) {
-      fetchRank();
-    }
-    if (categoryRankData.length === 0) {
-      fetchCategoryRank();
+    if (heartBeat === 10 || heartBeat % 30 === 0) {
+      if (RankData.length === 0) {
+        fetchRank(heartBeat);
+      }
+      if (buy123RankData.length === 0 && pconeRankData.length === 0) {
+        fetchCategoryRank(heartBeat);
+      }
     }
   }, [heartBeat]);
 
   useEffect(() => {
     const nextObj = RankData.shift();
     if (!nextObj) return;
-    const cloneNextObj = categoryRankData.shift();
-    if (!cloneNextObj) return;
+    const buy123NextObj = buy123RankData.shift();
+    const pconeNextObj = pconeRankData.shift();
 
     let newObject = { ...rank };
     if (nextObj?.name in newObject) {
@@ -156,7 +162,6 @@ const Globalprovider = ({ children }) => {
     });
     const finalArray = newArray.slice(0, 10);
     rankDisplay = finalArray;
-    console.log("rankDisplay", rankDisplay);
     fetchAll(heartBeat);
 
     // --------------------category-------------------
@@ -166,35 +171,33 @@ const Globalprovider = ({ children }) => {
     let buy123SumArray = [];
     let pconeSumArray = [];
 
-    cloneNextObj["percent"] = 0;
-    if (nextObj?.site === "buy123") {
-      if (!(cloneNextObj?.category in buy123List)) {
-        buy123List[cloneNextObj?.category] = {}; //接上api後換成分類id
-        buy123List[cloneNextObj?.category].category = cloneNextObj.category;
-        buy123List[cloneNextObj?.category].site = cloneNextObj.site;
-        buy123List[cloneNextObj?.category].amount = 0;
+    buy123NextObj["percent"] = 0;
+    if (buy123NextObj?.site === "buy123") {
+      if (!(buy123NextObj?.category in buy123List)) {
+        buy123List[buy123NextObj?.category] = {};
+        buy123List[buy123NextObj?.category].category = buy123NextObj.category;
+        buy123List[buy123NextObj?.category].site = buy123NextObj.site;
+        buy123List[buy123NextObj?.category].amount = 0;
       }
-      buy123List[cloneNextObj?.category].amount += parseInt(
-        cloneNextObj?.amount
+      buy123List[buy123NextObj?.category].amount += parseInt(
+        buy123NextObj?.amount
       );
-      buy123List[cloneNextObj?.category].percent =
-        (buy123List[cloneNextObj?.category].amount / buy123Sum) * 100;
+      buy123List[buy123NextObj?.category].percent = 0;
     }
     buy123Category = buy123List;
 
-    if (cloneNextObj?.site === "pcone") {
-      if (!(cloneNextObj?.category in pconeList)) {
-        pconeList[cloneNextObj?.category] = {};
-        pconeList[cloneNextObj?.category].category = cloneNextObj?.category;
-        pconeList[cloneNextObj?.category].site = nextObj.site;
-        pconeList[cloneNextObj?.category].amount = 0;
-        pconeList[cloneNextObj?.category].percent = 0;
+    if (pconeNextObj?.site === "pcone") {
+      if (!(pconeNextObj?.category in pconeList)) {
+        pconeList[pconeNextObj?.category] = {};
+        pconeList[pconeNextObj?.category].category = pconeNextObj?.category;
+        pconeList[pconeNextObj?.category].site = nextObj.site;
+        pconeList[pconeNextObj?.category].amount = 0;
+        pconeList[pconeNextObj?.category].percent = 0;
       }
-      pconeList[cloneNextObj?.category].amount += parseInt(
-        cloneNextObj?.amount
+      pconeList[pconeNextObj?.category].amount += parseInt(
+        pconeNextObj?.amount
       );
-      pconeList[cloneNextObj?.category].percent =
-        (pconeList[cloneNextObj?.category].amount / pconeCategorySum) * 100;
+      pconeList[pconeNextObj?.category].percent = 0;
     }
     pconeCategory = pconeList;
 

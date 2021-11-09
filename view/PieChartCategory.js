@@ -49,22 +49,6 @@ const PieChartCategory = ({ className, siteName }) => {
       "rgb(93,82,78,0.1)"
     ];
   }
-  // console.log("obj", obj);
-  // console.log("pconeSum", pconeSum);
-  // console.log("buy123Sum", buy123Sum);
-
-  // const colors = [
-  //   "rgba(24, 254, 254, 0.65)",
-  //   "rgba(255, 153, 0, 0.65)",
-  //   "rgba(151, 0, 175, 0.65)",
-  //   "rgba(255, 92, 22, 0.65)",
-  //   "rgba(255, 0, 214, 0.65)",
-  //   "rgba(255, 61, 0, 0.65)",
-  //   "rgba(82, 0, 255, 0.65)",
-  //   "rgba(6, 132, 248, 0.65)",
-  //   "rgba(149, 132, 255, 0.65)",
-  //   "rgba(5, 0, 232, 0.65)"
-  // ];
 
   return (
     <div className={className}>
