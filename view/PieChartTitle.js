@@ -5,8 +5,9 @@ import { useContext } from "react";
 import { GlobalContext } from "../provider/globalprovider";
 
 const PieChartTitle = ({ className, siteName, siteColor }) => {
-  const { rankDisplay } = useContext(GlobalContext);
+  const { rankDisplay, pconeCategories } = useContext(GlobalContext);
   let topArray = [];
+  let pcone = "";
   let site = "buy123";
   let s = 5;
   if (siteName === "松果購物") {
@@ -20,6 +21,10 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
 
   if (topArray[0] && topArray[0].length > 20) {
     s = 8;
+  }
+
+  if (0 < pconeCategories.length) {
+    pcone = pconeCategories[0].category;
   }
 
   return (
@@ -44,7 +49,7 @@ const PieChartTitle = ({ className, siteName, siteColor }) => {
         >
           <div className="marquee">
             <p style={{ animation: `scroll-left ${s}s linear infinite` }}>
-              {topArray[0]}
+              {topArray[0] ? topArray[0] : pcone}
             </p>
           </div>
         </div>
